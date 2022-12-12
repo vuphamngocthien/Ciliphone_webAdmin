@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "Ciliphone_webAdmin",
+    "slug": "Ciliphone_webAdmin",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
