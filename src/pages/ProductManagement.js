@@ -2,10 +2,11 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import GetData from './src/components/DataGrid';
 import React, { useState, useEffect } from 'react';
-import DialogUpdateUser from './src/components/DialogUpdateUser';
 import DialogUpdateProduct from './src/components/DialogUpdateUser';
 
-export default function App(props) {
+const type = 1;
+
+export default function ProductManagement() {
 
   const [type, setType] = useState(1);
 
@@ -83,17 +84,16 @@ export default function App(props) {
           <View style={styles.routes}>
             <Image style={styles.routesImg} source={require('./assets/img/dashboard.png')}></Image>
             <View style={styles.routesTextContainer}>
-              <Text style={styles.routesText}>Dashboard / User Management</Text>
+              <Text style={styles.routesText}>Dashboard / Product Management</Text>
             </View>
             <TouchableOpacity style={styles.buttonAdd} onPress={handleClickOpen}>
-              <Image style={styles.buttonAddImg} source={require('./assets/img/plus.png')} />
+              <Image style={styles.buttonAddImg} source={require('../admin/assets/img/plus.png')} />
               <Text style={styles.buttonAddText}>New</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.tableContainer}>
             <GetData myType={type}></GetData>
             <DialogUpdateProduct open={open}/>
-            <DialogUpdateUser open={open}/>
           </View>
         </View>
       </View>

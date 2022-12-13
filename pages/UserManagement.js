@@ -3,9 +3,10 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import GetData from './src/components/DataGrid';
 import React, { useState, useEffect } from 'react';
 import DialogUpdateUser from './src/components/DialogUpdateUser';
-import DialogUpdateProduct from './src/components/DialogUpdateUser';
 
-export default function App(props) {
+const type = 2;
+
+export default function UserManagement() {
 
   const [type, setType] = useState(1);
 
@@ -86,14 +87,13 @@ export default function App(props) {
               <Text style={styles.routesText}>Dashboard / User Management</Text>
             </View>
             <TouchableOpacity style={styles.buttonAdd} onPress={handleClickOpen}>
-              <Image style={styles.buttonAddImg} source={require('./assets/img/plus.png')} />
+              <Image style={styles.buttonAddImg} source={require('../admin/assets/img/plus.png')} />
               <Text style={styles.buttonAddText}>New</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.tableContainer}>
             <GetData myType={type}></GetData>
-            <DialogUpdateProduct open={open}/>
-            <DialogUpdateUser open={open}/>
+            <DialogUpdateUser open={open} />
           </View>
         </View>
       </View>
