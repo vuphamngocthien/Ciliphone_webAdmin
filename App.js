@@ -7,7 +7,7 @@ import DialogUpdateProduct from './src/components/DialogUpdateUser';
 
 export default function App(props) {
 
-  const [type, setType] = useState(1);
+  const [type, setType] = useState(2);
 
 
   const [open, setOpen] = useState(false);
