@@ -1,21 +1,42 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import GetData from './src/components/DataGrid';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import DialogUpdateUser from './src/components/DialogUpdateUser';
-import DialogUpdateProduct from './src/components/DialogUpdateUser';
+import Material from 'react-native-vector-icons/MaterialIcons';
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart
+} from "react-native-chart-kit";
+
+const screenWidth = Dimensions.get("window").width;
+
+const chartConfig = {
+  backgroundGradientFrom: "black",
+  backgroundGradientFromOpacity: 0,
+  backgroundGradientTo: "black",
+  backgroundGradientToOpacity: 0.5,
+  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+  strokeWidth: 3, // optional, default 3
+  barPercentage: 0.5,
+  useShadowColorFromDataset: false // optional
+};
+
+const data = {
+  labels: ["January", "February", "March", "April", "May", "June"],
+  datasets: [
+    {
+      data: [20, 45, 28, 80, 99, 43],
+      color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+      strokeWidth: 3 // optional
+    }
+  ],
+  //legend: ["Rainy Days"] // optional
+};
 
 export default function App(props) {
-
-  const [type, setType] = useState(2);
-
-
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.sideLeft}>
@@ -83,17 +104,86 @@ export default function App(props) {
           <View style={styles.routes}>
             <Image style={styles.routesImg} source={require('./assets/img/dashboard.png')}></Image>
             <View style={styles.routesTextContainer}>
-              <Text style={styles.routesText}>Dashboard / User Management</Text>
+              <Text style={styles.routesText}>Dashboard</Text>
             </View>
-            <TouchableOpacity style={styles.buttonAdd} onPress={handleClickOpen}>
-              <Image style={styles.buttonAddImg} source={require('./assets/img/plus.png')} />
-              <Text style={styles.buttonAddText}>New</Text>
-            </TouchableOpacity>
           </View>
-          <View style={styles.tableContainer}>
-            <GetData myType={type}></GetData>
-            <DialogUpdateProduct open={open}/>
-            <DialogUpdateUser open={open}/>
+          <View style={styles.analytics}>
+            <View style={{ margin: 10, flexDirection: 'row', marginLeft: 55 }}>
+              <View style={{ backgroundColor: '#D9D9D9', width: 170, height: 120, borderRadius: 10, marginRight: 30, }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+                  <Material name='language' style={{ color: 'red', fontSize: 24, marginRight: 5 }} />
+                  <Text style={{ color: 'blue', fontSize: 18, fontWeight: 'bold' }}>Total Access</Text>
+                </View>
+                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
+                  <Text style={{ color: 'red', fontSize: 24 }}>1.500.000</Text>
+                </View>
+              </View>
+              <View style={{ backgroundColor: '#D9D9D9', width: 170, height: 120, borderRadius: 10, marginRight: 30, }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+                  <Material name='language' style={{ color: 'red', fontSize: 24, marginRight: 5 }} />
+                  <Text style={{ color: 'blue', fontSize: 18, fontWeight: 'bold' }}>New User</Text>
+                </View>
+                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
+                  <Text style={{ color: 'red', fontSize: 24 }}>134</Text>
+                </View>
+              </View>
+              <View style={{ backgroundColor: '#D9D9D9', width: 170, height: 120, borderRadius: 10, marginRight: 30, }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+                  <Material name='language' style={{ color: 'red', fontSize: 24, marginRight: 5 }} />
+                  <Text style={{ color: 'blue', fontSize: 18, fontWeight: 'bold' }}>Product Sold</Text>
+                </View>
+                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
+                  <Text style={{ color: 'red', fontSize: 24 }}>536.976</Text>
+                </View>
+              </View>
+              <View style={{ backgroundColor: '#D9D9D9', width: 170, height: 120, borderRadius: 10, marginRight: 30, }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+                  <Material name='language' style={{ color: 'red', fontSize: 24, marginRight: 5 }} />
+                  <Text style={{ color: 'blue', fontSize: 18, fontWeight: 'bold' }}>New Product</Text>
+                </View>
+                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
+                  <Text style={{ color: 'red', fontSize: 24 }}>32</Text>
+                </View>
+              </View>
+              <View style={{ backgroundColor: '#D9D9D9', width: 170, height: 120, borderRadius: 10, marginRight: 30, }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+                  <Material name='language' style={{ color: 'red', fontSize: 24, marginRight: 5 }} />
+                  <Text style={{ color: 'blue', fontSize: 18, fontWeight: 'bold' }}>Total Comments</Text>
+                </View>
+                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
+                  <Text style={{ color: 'red', fontSize: 24 }}>1.159</Text>
+                </View>
+              </View>
+              <View style={{ backgroundColor: '#D9D9D9', width: 170, height: 120, borderRadius: 10, marginRight: 30, }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+                  <Material name='language' style={{ color: 'red', fontSize: 24, marginRight: 5 }} />
+                  <Text style={{ color: 'blue', fontSize: 18, fontWeight: 'bold' }}>Average Rating</Text>
+                </View>
+                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
+                  <Text style={{ color: 'red', fontSize: 24 }}>4.3 / 5</Text>
+                </View>
+              </View>
+            </View>
+            <View style={{ flexDirection: 'row', display: 'flex' }}>
+              <LineChart
+                style={{ flex: 1, margin: 10, marginLeft: 25 }}
+                data={data}
+                width={600}
+                height={400}
+                verticalLabelRotation={10}
+                chartConfig={chartConfig}
+                bezier
+              />
+              <BarChart
+                style={{ flex: 1, margin: 10 }}
+                data={data}
+                width={600}
+                height={400}
+                yAxisLabel="$"
+                chartConfig={chartConfig}
+                verticalLabelRotation={30}
+              />
+            </View>
           </View>
         </View>
       </View>
@@ -303,25 +393,5 @@ const styles = StyleSheet.create({
   },
   routesText: {
 
-  },
-  tableContainer: {
-    width: '100%',
-    height: '100%',
-  },
-  buttonAdd: {
-    borderBottomWidth: 1,
-    marginLeft: 900,
-    width: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  buttonAddImg: {
-    width: 16,
-    height: 16,
-    marginRight: 10
-  },
-  buttonAddText: {
-    color: 'blue'
   },
 });

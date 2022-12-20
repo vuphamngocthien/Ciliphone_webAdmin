@@ -82,6 +82,7 @@ function DataProduct() {
 
     console.log(data);
     console.log(open);
+    console.log(cellValues);
 
     return <div style={{ height: '95%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
         <DataGrid rows={rows} columns={columns} pageSize={10} rowsPerPageOptions={[10]} checkboxSelection>
