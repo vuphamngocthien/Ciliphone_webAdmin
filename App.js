@@ -1,42 +1,131 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, FlatList, Modal } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Material from 'react-native-vector-icons/MaterialIcons';
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart
-} from "react-native-chart-kit";
+import DetailModal from './src/components/DetailModal';
 
-const screenWidth = Dimensions.get("window").width;
+const listStatusTitle = [
+  { status: 'All'},
+  { status: 'Canceled'},
+  { status: 'Process'},
+  { status: 'Delivered'},
+]
 
-const chartConfig = {
-  backgroundGradientFrom: "black",
-  backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: "black",
-  backgroundGradientToOpacity: 0.5,
-  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-  strokeWidth: 3, // optional, default 3
-  barPercentage: 0.5,
-  useShadowColorFromDataset: false // optional
-};
-
-const data = {
-  labels: ["January", "February", "March", "April", "May", "June"],
-  datasets: [
-    {
-      data: [20, 45, 28, 80, 99, 43],
-      color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-      strokeWidth: 3 // optional
-    }
-  ],
-  //legend: ["Rainy Days"] // optional
-};
+const data = [
+  {
+    name: 'hd01',
+    status: 'Canceled',
+  },
+  {
+    name: 'hd02',
+    status: 'Process',
+  },
+  {
+    name: 'hd03',
+    status: 'Canceled',
+  },
+  {
+    name: 'hd04',
+    status: 'Process',
+  },
+  {
+    name: 'hd05',
+    status: 'Process',
+  },
+  {
+    name: 'hd06',
+    status: 'Process',
+  },
+  {
+    name: 'hd07',
+    status: 'Delivered',
+  },
+  {
+    name: 'hd08',
+    status: 'Canceled',
+  },
+  {
+    name: 'hd09',
+    status: 'Process',
+  },
+  {
+    name: 'hd10',
+    status: 'Canceled',
+  },
+  {
+    name: 'hd11',
+    status: 'Process',
+  },
+  {
+    name: 'hd12',
+    status: 'Delivered',
+  },
+  {
+    name: 'hd13',
+    status: 'Delivered',
+  },
+  {
+    name: 'hd14',
+    status: 'Delivered',
+  },
+  {
+    name: 'hd15',
+    status: 'Canceled',
+  },
+]
 
 export default function App(props) {
+
+  const [status, setStatus] = useState('All');
+
+  const [datalist, setDatalist] = useState(data);
+
+  const setStatusFilter = status => {
+    if (status != 'All') {
+      setDatalist([...data.filter(e => e.status === status)])
+    } else {
+      setDatalist(data);
+    }
+    setStatus(status)
+  }
+
+  const renderItem = ({item, index}) => {
+    return (
+      <View key={index} style={{flexDirection: 'row', paddingVertical: 15,}}>
+        <View style={{padding: 10}}>
+          <Material name='' style={{width: 50, height: 50,}}></Material>
+        </View>
+        <View style={{flex: 1, paddingHorizontal: 10, justifyContent: 'center',}}>
+          <Text style={{fontSize: 16, fontWeight: 'bold'}}>{item.name}</Text>
+        </View>
+        <View style={[
+          styles.itemStatus,
+          {backgroundColor: item.status === 'All' ? '#e5848e' : '#69c080'}
+          ]}>
+          <Text>{item.status}</Text>
+        </View>
+        <TouchableOpacity style={[
+          styles.itemStatus,
+          {backgroundColor: item.status === 'All' ? '#e5848e' : '#blue'}
+          ]}
+          onPress={() =>{changeModalVisible(true)}}
+          >
+          <Text>Detail</Text>
+        </TouchableOpacity>
+      </View> 
+    )
+  }
+
+  const [showModal, setShowModal] = useState(false);
+
+  const changeModalVisible = (bool) => {
+    setShowModal(bool);
+  }
+
+  const separator = () => {
+    return <View style={{height: 1, backgroundColor: '#f1f1f1'}}/>
+  }
+ 
   return (
     <View style={styles.container}>
       <View style={styles.sideLeft}>
@@ -107,83 +196,29 @@ export default function App(props) {
               <Text style={styles.routesText}>Dashboard</Text>
             </View>
           </View>
-          <View style={styles.analytics}>
-            <View style={{ margin: 10, flexDirection: 'row', marginLeft: 55 }}>
-              <View style={{ backgroundColor: '#D9D9D9', width: 170, height: 120, borderRadius: 10, marginRight: 30, }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  <Material name='language' style={{ color: 'red', fontSize: 24, marginRight: 5 }} />
-                  <Text style={{ color: 'blue', fontSize: 18, fontWeight: 'bold' }}>Total Access</Text>
-                </View>
-                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
-                  <Text style={{ color: 'red', fontSize: 24 }}>1.500.000</Text>
-                </View>
-              </View>
-              <View style={{ backgroundColor: '#D9D9D9', width: 170, height: 120, borderRadius: 10, marginRight: 30, }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  <Material name='language' style={{ color: 'red', fontSize: 24, marginRight: 5 }} />
-                  <Text style={{ color: 'blue', fontSize: 18, fontWeight: 'bold' }}>New User</Text>
-                </View>
-                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
-                  <Text style={{ color: 'red', fontSize: 24 }}>134</Text>
-                </View>
-              </View>
-              <View style={{ backgroundColor: '#D9D9D9', width: 170, height: 120, borderRadius: 10, marginRight: 30, }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  <Material name='language' style={{ color: 'red', fontSize: 24, marginRight: 5 }} />
-                  <Text style={{ color: 'blue', fontSize: 18, fontWeight: 'bold' }}>Product Sold</Text>
-                </View>
-                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
-                  <Text style={{ color: 'red', fontSize: 24 }}>536.976</Text>
-                </View>
-              </View>
-              <View style={{ backgroundColor: '#D9D9D9', width: 170, height: 120, borderRadius: 10, marginRight: 30, }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  <Material name='language' style={{ color: 'red', fontSize: 24, marginRight: 5 }} />
-                  <Text style={{ color: 'blue', fontSize: 18, fontWeight: 'bold' }}>New Product</Text>
-                </View>
-                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
-                  <Text style={{ color: 'red', fontSize: 24 }}>32</Text>
-                </View>
-              </View>
-              <View style={{ backgroundColor: '#D9D9D9', width: 170, height: 120, borderRadius: 10, marginRight: 30, }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  <Material name='language' style={{ color: 'red', fontSize: 24, marginRight: 5 }} />
-                  <Text style={{ color: 'blue', fontSize: 18, fontWeight: 'bold' }}>Total Comments</Text>
-                </View>
-                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
-                  <Text style={{ color: 'red', fontSize: 24 }}>1.159</Text>
-                </View>
-              </View>
-              <View style={{ backgroundColor: '#D9D9D9', width: 170, height: 120, borderRadius: 10, marginRight: 30, }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  <Material name='language' style={{ color: 'red', fontSize: 24, marginRight: 5 }} />
-                  <Text style={{ color: 'blue', fontSize: 18, fontWeight: 'bold' }}>Average Rating</Text>
-                </View>
-                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
-                  <Text style={{ color: 'red', fontSize: 24 }}>4.3 / 5</Text>
-                </View>
-              </View>
+          <View style={{flex: 1, paddingHorizontal: 10, justifyContent: 'center'}}>
+            <View style={styles.listStatus}>
+              {
+                listStatusTitle.map(e => (
+                  <TouchableOpacity style={[styles.btnStatus, status === e.status && styles.btnActive]} onPress={() => setStatusFilter(e.status)}>
+                    <Text style={[styles.btnText, status === e.status && styles.textActive]}>
+                      {e.status}
+                    </Text>
+                  </TouchableOpacity>
+                ))
+              }
             </View>
-            <View style={{ flexDirection: 'row', display: 'flex' }}>
-              <LineChart
-                style={{ flex: 1, margin: 10, marginLeft: 25 }}
-                data={data}
-                width={600}
-                height={400}
-                verticalLabelRotation={10}
-                chartConfig={chartConfig}
-                bezier
-              />
-              <BarChart
-                style={{ flex: 1, margin: 10 }}
-                data={data}
-                width={600}
-                height={400}
-                yAxisLabel="$"
-                chartConfig={chartConfig}
-                verticalLabelRotation={30}
-              />
-            </View>
+            <FlatList 
+              data={datalist}
+              keyExtractor={(e, i) => i.toString()}
+              renderItem={renderItem}
+              ItemSeparatorComponent={separator}
+            />
+            <Modal animationType='none' transparent={false} visible={showModal} onRequestClose={() => {
+              changeModalVisible(false);
+            }}>
+              <DetailModal changeModalVisible={changeModalVisible}/>
+            </Modal>
           </View>
         </View>
       </View>
@@ -394,4 +429,34 @@ const styles = StyleSheet.create({
   routesText: {
 
   },
+  listStatus: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    marginBottom: 20
+  },
+  btnStatus: {
+    width: 300,
+    flexDirection: 'row',
+    borderWidth: 0.5,
+    borderColor: '#EBEBEB',
+    padding: 10,
+    justifyContent: 'center',
+  },
+  btnText: {
+    fontSize: 16,
+  },
+  btnActive: {
+    backgroundColor: '#E6838D'
+  },
+  textActive: {
+    color: '#fff'
+  },
+  itemStatus: {
+    backgroundColor: 'green',
+    paddingHorizontal: 6,
+    justifyContent: 'center',
+    right: 12,
+    width: 100,
+    alignItems: 'center'
+  }
 });
