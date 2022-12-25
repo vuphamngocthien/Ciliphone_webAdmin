@@ -1,24 +1,37 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
-import React, { useState, useEffect } from "react";
+import {StyleSheet,Text,View,Image,TouchableOpacity,TextInput,} from "react-native";
+import { getDatabase, ref, set, push, onValue } from "firebase/database";
+import React, { useState, useEffect,useContext } from "react";
 
+ 
 export default function Login(props) {
+  const [data,setData]=useState([]);
+  const [name,setName]=useState([]);
+  const [password,setPassword]=useState([]);
+ 
+  useEffect(()=>{
+    onValue(ref(getDatabase(), "User"), (snapshot) => {
+      setData(Object.values(snapshot.val()));
+    });
+  },[])
+const login=()=>{
+  for(var i=0;i<=data.length;i++){
+    if(name ==data[i].Email && password == data[i].Password){
+      alert('dang nhap thanh cong')
+    }else{
+      return;
+    }
+  }
+}
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>
         <View style={styles.reactAdminContainer}>
           <Text style={styles.reactAdminText}>Ciliphone</Text>
           <View style={styles.formInputContainer}>
-            <TextInput style={styles.inputUsername} placeholder="Username" />
-            <TextInput style={styles.inputPassword} placeholder="Password" />
-            <TouchableOpacity style={styles.btnLogin}>Sign In</TouchableOpacity>
+            <TextInput style={styles.inputUsername} onChangeText={setName}  placeholder="Username" />
+            <TextInput style={styles.inputPassword} onChangeText={setPassword} placeholder="Password" />
+            <TouchableOpacity style={styles.btnLogin}onPress={login} ><Text>Sign In</Text></TouchableOpacity>
           </View>
         </View>
       </View>

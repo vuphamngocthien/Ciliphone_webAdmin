@@ -6,16 +6,23 @@ import DialogUpdateUser from "../components/DialogUpdateUser";
 import DialogUpdateProduct from "../components/DialogUpdateUser";
 import { app } from "../../component/FirebaseConfig";
 const HomeAdmin = (props) => {
-  const [type, setType] = useState(2);
+  const [type, setType] = useState(1);
 
   const [open, setOpen] = useState(false);
-
+  const [isActive,setisActive]=useState(true);
   const handleClickOpen = () => {
     setOpen(true);
   };
+ const handleClick=()=>{
+  if(isActive !=false){
+    setisActive(false)
+  }else{
+    setisActive(true)
+  }
+ }
   return (
-    <View style={styles.container}>
-      <View style={styles.sideLeft}>
+    <View style={{flex: 1,flexDirection: "row",backgroundColor:isActive ? "#fff":'black'}}>
+      <View style={{backgroundColor:isActive ? "#D9D9D9":"black",width: 250,height: "100%",flexDirection: "column",marginLeft: 0,}}>
         <View style={styles.appNameContainer}>
           <Text style={styles.appName}>Ciliphone Admin</Text>
         </View>
@@ -88,15 +95,17 @@ const HomeAdmin = (props) => {
             <View style={styles.themeTextContainer}>
               <Text style={styles.themeText}>Switch Theme</Text>
             </View>
+            <TouchableOpacity onPress={handleClick}>
             <Image
               style={styles.themeSwitchImg}
               source={require("../../assets/img/on-button.png")}
             ></Image>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
       <View style={styles.sideRight}>
-        <View style={styles.header}>
+        <View style={{ backgroundColor:isActive ? "#D9D9D9":'black',width: "100%",height: 50,flexDirection: "row",flexDirection: "row-reverse",alignItems: "center",}}>
           <Image
             style={styles.dropdownImg}
             source={require("../../assets/img/down-filled-triangular-arrow.png")}
@@ -143,7 +152,7 @@ const HomeAdmin = (props) => {
           </View>
           <View style={styles.tableContainer}>
             <GetData myType={type}></GetData>
-            <DialogUpdateProduct open={open} />
+             <DialogUpdateProduct open={open} />
             <DialogUpdateUser open={open} />
           </View>
         </View>
@@ -153,18 +162,18 @@ const HomeAdmin = (props) => {
 };
 export default HomeAdmin;
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "row",
-    backgroundColor: "#fff",
-  },
-  sideLeft: {
-    backgroundColor: "#D9D9D9",
-    width: 250,
-    height: "100%",
-    flexDirection: "column",
-    marginLeft: 0,
-  },
+  // container: {
+  //   flex: 1,
+  //   flexDirection: "row",
+  //   backgroundColor: "#fff",
+  // },
+  // sideLeft: {
+  //   backgroundColor: "#D9D9D9",
+  //   width: 250,
+  //   height: "100%",
+  //   flexDirection: "column",
+  //   marginLeft: 0,
+  // },
   appNameContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -281,14 +290,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
   },
-  header: {
-    backgroundColor: "#D9D9D9",
-    width: "100%",
-    height: 50,
-    flexDirection: "row",
-    flexDirection: "row-reverse",
-    alignItems: "center",
-  },
+  // header: {
+  //   backgroundColor: "#D9D9D9",
+  //   width: "100%",
+  //   height: 50,
+  //   flexDirection: "row",
+  //   flexDirection: "row-reverse",
+  //   alignItems: "center",
+  // },
   openSideImg: {
     width: 24,
     height: 24,

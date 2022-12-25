@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import { Dropdown } from 'react-native-element-dropdown';
 import {
   Dialog,
   DialogActions,
@@ -16,17 +17,49 @@ import {
 } from "@mui/material";
 import { ProductContext } from "../../firebaseCon/ProductCon";
 import axios from "axios";
+import { getDatabase, ref, set, push, onValue } from "firebase/database";
 
 export default function DialogUpdateProduct(props) {
+
   const [open, setOpen] = useState(props);
   const [Pd_id, setpd_id] = useState(props);
-
+  
   const { addProduct, removePro, updatePro } = useContext(ProductContext);
   const [name, setName] = useState("");
   const [Category, setCategory] = useState("");
+  const [data, setData] = useState([]);
   const [Sale, setSale] = useState("");
   const [Quantity, setQuantity] = useState("");
   const [Price, setPrice] = useState("");
+  const[label,setlabel]=useState([]);
+  
+
+  
+  
+  
+  useEffect(()=>{
+    onValue(ref(getDatabase(), "Category"), (snapshot) => {
+      setData(Object.values(snapshot.val()));
+    });
+  
+  },[])
+
+
+
+    const [value, setValue] = useState(null);
+    const [isFocus, setIsFocus] = useState(false);
+
+    const renderLabel = () => {
+      if (value || isFocus) {
+        return (
+          <Text style={[styles.label, isFocus && { color: 'blue' }]}>
+            Category text
+          </Text>
+        );
+      }
+      return null;
+    };
+  var iii="sdklfjasldf";
   const updateProduct = async () => {
     console.log("da update", name);
     await updatePro(
@@ -40,6 +73,15 @@ export default function DialogUpdateProduct(props) {
       "pd5"
     );
   };
+
+  var category=[];
+  
+    // for(var i=0;i<=data.length;i++){
+    //   if(data[i].Category_name == "All"){
+    //     console.log('done');
+    //   }
+    // }
+  
   return (
     <Dialog open={props.open} style={styles.dialog}>
       <DialogTitle style={styles.dialogTitleContainer}>
@@ -66,12 +108,30 @@ export default function DialogUpdateProduct(props) {
                 style={styles.editCategoryTextImg}
                 source={require("../../assets/img/options.png")}
               ></Image>
-              <Text style={styles.editCategoryText}>Category</Text>
+              <Text style={{marginBottom: 10,marginTop: 10,}}>Category text</Text>
             </View>
-            <TextInput
-              style={styles.editCategoryInput}
-              onChangeText={setCategory}
-            ></TextInput>
+                <Dropdown
+                  style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  iconStyle={styles.iconStyle}
+                  data={data}
+                  search
+                  maxHeight={300}
+                  labelField="Category_name"  
+                  valueField="Category_id"
+                  placeholder={!isFocus ? 'Select item' : '...'}
+                  searchPlaceholder="Search..."
+                  value={value}
+                  onFocus={() => setIsFocus(true)}
+                  onBlur={() => setIsFocus(false)}
+                  onChange={item => {
+                    setValue(item.value);
+                    setIsFocus(false);
+                  }}
+                />
+
           </View>
           <View style={styles.editSaleZone}>
             <View style={styles.editSaleTextTitle}>
@@ -115,7 +175,7 @@ export default function DialogUpdateProduct(props) {
         </View>
       </DialogContent>
       <DialogActions>
-        <TouchableOpacity onPress={updateProduct} style={styles.buttonUpdate}>
+        <TouchableOpacity  style={styles.buttonUpdate}>
           <Text>Update</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonCancel}>
@@ -168,9 +228,7 @@ const styles = StyleSheet.create({
   editCategoryZone: {
     width: 500,
   },
-  editCategoryTextTitle: {
-    flexDirection: "row",
-  },
+
   editCategoryTextImg: {
     width: 20,
     height: 20,
@@ -253,4 +311,44 @@ const styles = StyleSheet.create({
     color: "red",
     margin: 10,
   },
+  dropdown: {
+    // height: 50,
+    // borderColor: 'gray',
+    // borderRadius: 8,
+    // paddingHorizontal: 8,
+    // borderBottomWidth: 1,
+    // height: 30,
+    borderBottomWidth: 1,
+    height: 30,
+    padding:20
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+  editCategoryTextTitle:{
+    flexDirection:'row'
+  }
 });

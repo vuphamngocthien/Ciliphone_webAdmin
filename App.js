@@ -6,11 +6,11 @@ import { ProductContextProvider } from "./firebaseCon/ProductCon";
 import Login from "./src/pages/Login";
 export default function App() {
   return (
-    /* <UserContextProvider>
+     <UserContextProvider>
       <ProductContextProvider>
-        <HomeAdmin />
+         <HomeAdmin /> 
       </ProductContextProvider>
-    </UserContextProvider>*/
-    <Login />
+    </UserContextProvider>
+  // <Login />
   );
 }
