@@ -52,7 +52,7 @@ export default function DialogAddProduct(props) {
     return null;
   };
   const kol = async () => {
-    setOpen(false);
+    setOpen(!props.open);
   };
   return (
     <Dialog open={props.open} style={styles.dialog}>

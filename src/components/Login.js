@@ -7,21 +7,26 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { getDatabase, ref, set, push, onValue } from "firebase/database";
+import { UserContext } from "../../firebaseCon/UserContext";
 
 export default function Login(props) {
+  const {setisLoggedIn} = useContext(UserContext)
   const [data, setData] = useState([]);
-  const [name, setName] = useState([]);
-  const [password, setPassword] = useState([]);
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
   useEffect(() => {
     onValue(ref(getDatabase(), "User"), (snapshot) => {
       setData(Object.values(snapshot.val()));
     });
   }, []);
   const login = () => {
-    for (var i = 0; i <= data.length; i++) {
-      if (name == data[i].Email && password == data[i].Password) {
-        alert("dang nhap thanh cong");
+    console.log("Name ", data)
+    for (var i = 1; i <= data.length; i++) {
+      if (name == data[i - 1].Email && password == data[i - 1].Password) {
+        console.log("dang nhap thanh cong");
+        setisLoggedIn(true)
       } else {
         return;
       }
@@ -44,7 +49,7 @@ export default function Login(props) {
               placeholder="Password"
             />
             <TouchableOpacity style={styles.btnLogin} onPress={login}>
-              Sign In
+              <Text>Sign In</Text>
             </TouchableOpacity>
           </View>
         </View>

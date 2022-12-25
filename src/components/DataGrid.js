@@ -31,6 +31,8 @@ function GetData(props) {
     return DataProduct();
   } else if (props.myType == 2) {
     return DataUser();
+  } else if (props.myType == 3){
+    return DataCategory();
   } else {
     console.log("Dont have data !");
   }
@@ -236,6 +238,89 @@ function DataUser() {
         checkboxSelection
       ></DataGrid>
       <DialogUpdateUser open={open} us_id={us_id} />
+    </div>
+  );
+}
+
+function DataCategory() {
+  const [open, setOpen] = useState(false);
+
+  const [data, setData] = useState([]);
+  const { addProduct, removePro, setUppro } = useContext(ProductContext);
+  const loadData = async () => {
+    await onValue(ref(getDatabase(), "Category"), (snapshot) => {
+      setData(Object.values(snapshot.val()));
+    });
+  };
+  useEffect(() => {
+    loadData();
+  }, []);
+  const handleClickOpen = (id) => {
+    setOpen(true);
+    setUppro(id);
+  };
+  const removeProduct = async (id_pd) => {
+    await removePro(id_pd);
+    loadData();
+  };
+
+  const columns = [
+    { field: "Category_id", headerName: "ID", width: 30 },
+    { field: "Category_name", headerName: "Category Name", width: 250 },
+    {
+      field: "edit",
+      headerName: "Edit",
+      renderCell: (cellValues) => {
+        return (
+          <View style={styles.containeredit}>
+            <TouchableOpacity
+              style={styles.buttonEdit}
+              onPress={() => handleClickOpen(cellValues.id)}
+            >
+              <Image
+                style={styles.buttonEditImg}
+                source={require("../../assets/img/edit.png")}
+              />
+              <Text style={styles.buttonEditText}>Edit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonEdit}
+              onPress={() => removeProduct(cellValues.id)}
+            >
+              <Image
+                style={styles.buttonTrash}
+                source={require("../../assets/img/trashicon.jpg")}
+              />
+            </TouchableOpacity>
+          </View>
+        );
+      },
+    },
+  ];
+
+  const rows = data.map((row) => ({
+    id: row.Category_id,
+    Category_id: row.Category_id,
+    Category_name: row.Category_name,
+  }));
+
+  return (
+    <div
+      style={{
+        height: "95%",
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={10}
+        rowsPerPageOptions={[10]}
+        checkboxSelection
+      ></DataGrid>
+      <DialogUpdateProduct open={open} />
     </div>
   );
 }

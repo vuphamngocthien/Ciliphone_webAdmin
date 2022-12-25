@@ -15,6 +15,7 @@
     "@mui/material": "^5.10.17",
     "@mui/x-data-grid": "^5.17.14",
     "@react-native-firebase/app": "^16.4.6",
+    "@react-navigation/native": "^6.1.1",
     "axios": "^1.2.1",
     "expo": "~47.0.8",
     "expo-status-bar": "~1.4.2",

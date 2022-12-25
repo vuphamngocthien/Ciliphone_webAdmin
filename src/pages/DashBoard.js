@@ -149,15 +149,6 @@ const Dashboard = (props) => {
               <TouchableOpacity onPress={() => {props.navigation.navigate('InvoiceManagement')}}><Text style={styles.invoiceManagementText}>Invoice Management</Text></TouchableOpacity>
             </View>
           </View>
-          <View style={styles.searchContainer}>
-            <Image
-              style={styles.searchImg}
-              source={require("../../assets/img/search.png")}
-            ></Image>
-            <View style={styles.searchTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('Search')}}><Text style={styles.searchText}>Search</Text></TouchableOpacity>
-            </View>
-          </View>
           <View style={styles.themeContainer}>
             <Image
               style={styles.themeImg}
@@ -309,7 +300,7 @@ const Dashboard = (props) => {
                   <Text
                     style={{ color: "blue", fontSize: 18, fontWeight: "bold" }}
                   >
-                    Product Sold
+                    Revenue
                   </Text>
                 </View>
                 <View

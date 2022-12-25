@@ -54,6 +54,8 @@ export const UserContextProvider = (props) => {
         updateUser,
         setUpuser,
         upUser,
+        isLoggedIn,
+        setisLoggedIn
       }}
     >
       {children}

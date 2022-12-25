@@ -2,12 +2,13 @@ import React from 'react';
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from 'react-navigation';
 
-import Dashboard from '../pages/DashBoard';
-import UserManagement from '../pages/UserManagement';
-import CategoryManagement from '../pages/CategoryManagement';
-import ProductManagement from '../pages/ProductManagement';
-import InvoiceManagement from '../pages/InvoiceManagement';
-import Search from '../pages/Search';
+import Dashboard from '../../src/pages/DashBoard';
+import UserManagement from '../../src/pages/UserManagement';
+import CategoryManagement from '../../src/pages/CategoryManagement';
+import ProductManagement from '../../src/pages/ProductManagement';
+import InvoiceManagement from '../../src/pages/InvoiceManagement';
+import Search from '../../src/pages/Search';
+import Login from '../../src/components/Login';
 
 const MainNavigation = createStackNavigator(
     {
