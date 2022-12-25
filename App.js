@@ -4,13 +4,15 @@ import { app } from "./component/FirebaseConfig";
 import { UserContextProvider } from "./firebaseCon/UserContext";
 import { ProductContextProvider } from "./firebaseCon/ProductCon";
 import Login from "./src/pages/Login";
-import Cart from "./src/pages/Cart";
+import InvoiceManagement from "./src/pages/InvoiceManagement";
 import Dashboard from "./src/pages/DashBoard";
-export default function App() {
+import MainNavigation from './src/navigation/MainNavigation'
+import ProductManagement from "./src/pages/ProductManagement";
+export default function App(props) {
   return (
     <UserContextProvider>
       <ProductContextProvider>
-        <HomeAdmin />
+        <MainNavigation />
       </ProductContextProvider>
     </UserContextProvider>
     // <Login />

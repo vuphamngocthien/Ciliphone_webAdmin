@@ -1,14 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import GetData from './src/components/DataGrid';
+import GetData from '../components/DataGrid';
 import React, { useState, useEffect } from 'react';
-import DialogUpdateUser from './src/components/DialogUpdateUser';
+import DialogUpdateUser from '../components/DialogUpdateUser';
 
 const type = 2;
 
-export default function UserManagement() {
+export default function UserManagement(props) {
 
-  const [type, setType] = useState(1);
+  const [type, setType] = useState(2);
 
 
   const [open, setOpen] = useState(false);
@@ -21,75 +21,99 @@ export default function UserManagement() {
     <View style={styles.container}>
       <View style={styles.sideLeft}>
         <View style={styles.appNameContainer}>
-          <Text style={styles.appName}>REACT ADMIN</Text>
+          <Text style={styles.appName}>Ciliphone</Text>
         </View>
         <View style={styles.sideMenu}>
           <View style={styles.dashboardContainer}>
-            <Image style={styles.dashboardImg} source={require('./assets/img/dashboard.png')}></Image>
+            <Image
+              style={styles.dashboardImg}
+              source={require("../../assets/img/dashboard.png")}
+            ></Image>
             <View style={styles.dashboardTextContainer}>
-              <Text style={styles.dashboardText}>Dashboard</Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('Dashboard')}}><Text style={styles.dashboardText}>Dashboard</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.userManagementContainer}>
-            <Image style={styles.userManagementImg} source={require('./assets/img/group.png')}></Image>
+            <Image
+              style={styles.userManagementImg}
+              source={require("../../assets/img/group.png")}
+            ></Image>
             <View style={styles.userManagementTextContainer}>
-              <Text style={styles.userManagementText}>User Management</Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('UserManagement')}}><Text style={styles.userManagementText}>User Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.categoryManagementContainer}>
-            <Image style={styles.categoryManagementImg} source={require('./assets/img/options.png')}></Image>
+            <Image
+              style={styles.categoryManagementImg}
+              source={require("../../assets/img/options.png")}
+            ></Image>
             <View style={styles.categoryManagementTextContainer}>
-              <Text style={styles.categoryManagementText}>Category Management</Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('CategoryManagement')}}><Text style={styles.categoryManagementText}>Category Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.productManagementContainer}>
-            <Image style={styles.productManagementImg} source={require('./assets/img/trolley.png')}></Image>
+            <Image
+              style={styles.productManagementImg}
+              source={require("../../assets/img/trolley.png")}
+            ></Image>
             <View style={styles.productManagementTextContainer}>
-              <Text style={styles.productManagementText}>Product Management</Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('ProductManagement')}}><Text style={styles.productManagementText}>Product Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.invoiceManagementContainer}>
-            <Image style={styles.invoiceManagementImg} source={require('./assets/img/bill.png')}></Image>
+            <Image
+              style={styles.invoiceManagementImg}
+              source={require("../../assets/img/trolley.png")}
+            ></Image>
             <View style={styles.invoiceManagementTextContainer}>
-              <Text style={styles.invoiceManagementText}>Invoice Management</Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('InvoiceManagement')}}><Text style={styles.invoiceManagementText}>Invoice Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.searchContainer}>
-            <Image style={styles.searchImg} source={require('./assets/img/search.png')}></Image>
+            <Image
+              style={styles.searchImg}
+              source={require("../../assets/img/search.png")}
+            ></Image>
             <View style={styles.searchTextContainer}>
-              <Text style={styles.searchText}>Search</Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('Search')}}><Text style={styles.searchText}>Search</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.themeContainer}>
-            <Image style={styles.themeImg} source={require('./assets/img/light-bulb.png')}></Image>
+            <Image
+              style={styles.themeImg}
+              source={require("../../assets/img/light-bulb.png")}
+            ></Image>
             <View style={styles.themeTextContainer}>
               <Text style={styles.themeText}>Switch Theme</Text>
             </View>
-            <Image style={styles.themeSwitchImg} source={require('./assets/img/on-button.png')}></Image>
+            <Image
+              style={styles.themeSwitchImg}
+              source={require("../../assets/img/on-button.png")}
+            ></Image>
           </View>
         </View>
       </View>
       <View style={styles.sideRight}>
         <View style={styles.header}>
-          <Image style={styles.dropdownImg} source={require('./assets/img/down-filled-triangular-arrow.png')}></Image>
-          <Image style={styles.avatarImg} source={require('./assets/img/avataradmin.png')}></Image>
+          <Image style={styles.dropdownImg} source={require('../../assets//img/down-filled-triangular-arrow.png')}></Image>
+          <Image style={styles.avatarImg} source={require('../../assets/img/avataradmin.png')}></Image>
           <View style={styles.hiTextContainer}>
             <Text style={styles.hiText}>Hi, Luan</Text>
           </View>
-          <Image style={styles.usaImg} source={require('./assets/img/usa.png')}></Image>
-          <Image style={styles.notificationImg} source={require('./assets/img/notification.png')}></Image>
-          <Image style={styles.openSideImg} source={require('./assets/img/menu.png')}></Image>
+          <Image style={styles.usaImg} source={require('../../assets/img/usa.png')}></Image>
+          <Image style={styles.notificationImg} source={require('../../assets/img/notification.png')}></Image>
+          <Image style={styles.openSideImg} source={require('../../assets/img/menu.png')}></Image>
         </View>
         <View style={styles.mainPage}>
           <View style={styles.routes}>
-            <Image style={styles.routesImg} source={require('./assets/img/dashboard.png')}></Image>
+            <Image style={styles.routesImg} source={require('../../assets/img/dashboard.png')}></Image>
             <View style={styles.routesTextContainer}>
               <Text style={styles.routesText}>Dashboard / User Management</Text>
             </View>
-            <TouchableOpacity style={styles.buttonAdd} onPress={handleClickOpen}>
-              <Image style={styles.buttonAddImg} source={require('../admin/assets/img/plus.png')} />
+            {/* <TouchableOpacity style={styles.buttonAdd} onPress={handleClickOpen}>
+              <Image style={styles.buttonAddImg} source={require('../../assets/img/plus.png')} />
               <Text style={styles.buttonAddText}>New</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <View style={styles.tableContainer}>
             <GetData myType={type}></GetData>

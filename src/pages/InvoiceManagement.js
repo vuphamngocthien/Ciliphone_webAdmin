@@ -72,7 +72,7 @@ const listStatusTitle = [
   },
 ];*/
 
-const Cart = (props) => {
+const InvoiceManagement = (props) => {
   const [status, setStatus] = useState("All");
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState([]);
@@ -163,7 +163,7 @@ const Cart = (props) => {
     <View style={styles.container}>
       <View style={styles.sideLeft}>
         <View style={styles.appNameContainer}>
-          <Text style={styles.appName}>REACT ADMIN</Text>
+          <Text style={styles.appName}>Ciliphone</Text>
         </View>
         <View style={styles.sideMenu}>
           <View style={styles.dashboardContainer}>
@@ -172,7 +172,7 @@ const Cart = (props) => {
               source={require("../../assets/img/dashboard.png")}
             ></Image>
             <View style={styles.dashboardTextContainer}>
-              <Text style={styles.dashboardText}>Dashboard</Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('Dashboard')}}><Text style={styles.dashboardText}>Dashboard</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.userManagementContainer}>
@@ -181,7 +181,7 @@ const Cart = (props) => {
               source={require("../../assets/img/group.png")}
             ></Image>
             <View style={styles.userManagementTextContainer}>
-              <Text style={styles.userManagementText}>User Management</Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('UserManagement')}}><Text style={styles.userManagementText}>User Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.categoryManagementContainer}>
@@ -190,9 +190,7 @@ const Cart = (props) => {
               source={require("../../assets/img/options.png")}
             ></Image>
             <View style={styles.categoryManagementTextContainer}>
-              <Text style={styles.categoryManagementText}>
-                Category Management
-              </Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('CategoryManagement')}}><Text style={styles.categoryManagementText}>Category Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.productManagementContainer}>
@@ -201,20 +199,16 @@ const Cart = (props) => {
               source={require("../../assets/img/trolley.png")}
             ></Image>
             <View style={styles.productManagementTextContainer}>
-              <Text style={styles.productManagementText}>
-                Product Management
-              </Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('ProductManagement')}}><Text style={styles.productManagementText}>Product Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.invoiceManagementContainer}>
             <Image
               style={styles.invoiceManagementImg}
-              source={require("../../assets/img/bill.png")}
+              source={require("../../assets/img/trolley.png")}
             ></Image>
             <View style={styles.invoiceManagementTextContainer}>
-              <Text style={styles.invoiceManagementText}>
-                Invoice Management
-              </Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('InvoiceManagement')}}><Text style={styles.invoiceManagementText}>Invoice Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.searchContainer}>
@@ -223,7 +217,7 @@ const Cart = (props) => {
               source={require("../../assets/img/search.png")}
             ></Image>
             <View style={styles.searchTextContainer}>
-              <Text style={styles.searchText}>Search</Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('Search')}}><Text style={styles.searchText}>Search</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.themeContainer}>
@@ -327,7 +321,7 @@ const Cart = (props) => {
     </View>
   );
 };
-export default Cart;
+export default InvoiceManagement;
 const styles = StyleSheet.create({
   container: {
     flex: 1,

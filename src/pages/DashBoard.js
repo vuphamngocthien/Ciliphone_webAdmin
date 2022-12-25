@@ -110,7 +110,7 @@ const Dashboard = (props) => {
               source={require("../../assets/img/dashboard.png")}
             ></Image>
             <View style={styles.dashboardTextContainer}>
-              <Text style={styles.dashboardText}>Dashboard</Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('Dashboard')}}><Text style={styles.dashboardText}>Dashboard</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.userManagementContainer}>
@@ -119,7 +119,7 @@ const Dashboard = (props) => {
               source={require("../../assets/img/group.png")}
             ></Image>
             <View style={styles.userManagementTextContainer}>
-              <Text style={styles.userManagementText}>User Management</Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('UserManagement')}}><Text style={styles.userManagementText}>User Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.categoryManagementContainer}>
@@ -128,9 +128,7 @@ const Dashboard = (props) => {
               source={require("../../assets/img/options.png")}
             ></Image>
             <View style={styles.categoryManagementTextContainer}>
-              <Text style={styles.categoryManagementText}>
-                Category Management
-              </Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('CategoryManagement')}}><Text style={styles.categoryManagementText}>Category Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.productManagementContainer}>
@@ -139,9 +137,7 @@ const Dashboard = (props) => {
               source={require("../../assets/img/trolley.png")}
             ></Image>
             <View style={styles.productManagementTextContainer}>
-              <Text style={styles.productManagementText}>
-                Product Management
-              </Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('ProductManagement')}}><Text style={styles.productManagementText}>Product Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.invoiceManagementContainer}>
@@ -150,9 +146,7 @@ const Dashboard = (props) => {
               source={require("../../assets/img/trolley.png")}
             ></Image>
             <View style={styles.invoiceManagementTextContainer}>
-              <Text style={styles.invoiceManagementText}>
-                Invoice Management
-              </Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('InvoiceManagement')}}><Text style={styles.invoiceManagementText}>Invoice Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.searchContainer}>
@@ -161,7 +155,7 @@ const Dashboard = (props) => {
               source={require("../../assets/img/search.png")}
             ></Image>
             <View style={styles.searchTextContainer}>
-              <Text style={styles.searchText}>Search</Text>
+              <TouchableOpacity onPress={() => {props.navigation.navigate('Search')}}><Text style={styles.searchText}>Search</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.themeContainer}>
