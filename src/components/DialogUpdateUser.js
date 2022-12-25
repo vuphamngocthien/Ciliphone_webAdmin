@@ -19,9 +19,8 @@ import { UserContext } from "../../firebaseCon/UserContext";
 import { async } from "@firebase/util";
 export default function DialogUpdateUser(props) {
   const [open, setOpen] = useState(props);
-  const [us_id, setus_id] = useState(props);
 
-  const { removeUser, updateUser } = useContext(UserContext);
+  const { removeUser, updateUser, setUpuser, upUser } = useContext(UserContext);
   const [name, setUser_name] = useState("");
   const [birth, setBirth] = useState("");
   const [Email, setEmail] = useState("");
@@ -29,7 +28,7 @@ export default function DialogUpdateUser(props) {
   const [Phone, setPhone] = useState("");
   const [Money, setMoney] = useState("");
   const onUpdate = async () => {
-    await updateUser(name, birth, Email, Address, Phone, "us5", Money);
+    await updateUser(name, birth, Email, Address, Phone, upUser, Money);
   };
   return (
     <Dialog open={props.open} style={styles.dialog}>
@@ -109,11 +108,12 @@ export default function DialogUpdateUser(props) {
                 style={styles.editMoneyTextImg}
                 source={require("../../assets/img/money.png")}
               ></Image>
-              <Text style={styles.editMoneyText} onChangeText={setMoney}>
-                Money
-              </Text>
+              <Text style={styles.editMoneyText}>Money</Text>
             </View>
-            <TextInput style={styles.editMoneyInput}></TextInput>
+            <TextInput
+              style={styles.editMoneyInput}
+              onChangeText={setMoney}
+            ></TextInput>
           </View>
         </View>
       </DialogContent>

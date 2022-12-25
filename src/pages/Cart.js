@@ -1,41 +1,169 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import GetData from "../components/DataGrid";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+  FlatList,
+  Modal,
+} from "react-native";
 import React, { useState, useEffect } from "react";
+import Material from "react-native-vector-icons/MaterialIcons";
+import DetailModal from "../components/DetailModal";
+import { getDatabase, ref, set, push, onValue } from "firebase/database";
+const listStatusTitle = [
+  { status: "All" },
+  { status: "Canceled" },
+  { status: "Process" },
+  { status: "Delivered" },
+];
 
-import Dialog from "../components/Dialog";
-import { app } from "../../component/FirebaseConfig";
-import { async } from "@firebase/util";
-import DialogUpdateProduct from "../components/DialogUpdateProduct";
+/*const data = [
+  {
+    name: "hd01",
+    status: "Canceled",
+  },
+  {
+    name: "hd02",
+    status: "Process",
+  },
+  {
+    name: "hd03",
+    status: "Canceled",
+  },
+  {
+    name: "hd04",
+    status: "Process",
+  },
+  {
+    name: "hd05",
+    status: "Process",
+  },
+  {
+    name: "hd06",
+    status: "Process",
+  },
+  {
+    name: "hd07",
+    status: "Delivered",
+  },
+  {
+    name: "hd08",
+    status: "Canceled",
+  },
+  {
+    name: "hd09",
+    status: "Process",
+  },
+  {
+    name: "hd10",
+    status: "Canceled",
+  },
 
-import DialogAddProduct from "../components/DialogAddProduct";
-const HomeAdmin = (props) => {
-  const [type, setType] = useState(1);
+  {
+    name: "hd14",
+    status: "Delivered",
+  },
+  {
+    name: "hd15",
+    status: "Canceled",
+  },
+];*/
 
-  const [open, setOpen] = useState(false);
-  const [check, setCheck] = useState("product");
+const Cart = (props) => {
+  const [status, setStatus] = useState("All");
   const [refreshing, setRefreshing] = useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
+  const [data, setData] = useState([]);
+  const [user, setUser] = useState([]);
+  const loadData = async () => {
+    await onValue(ref(getDatabase(), "Detail_cart"), (snapshot) => {
+      setData(Object.values(snapshot.val()));
+      setDatalist(Object.values(snapshot.val()));
+    });
   };
-  const route = async (check) => {
-    if (check == "user") {
-      await setType(2);
-    } else {
-      await setType(1);
-    }
-  };
+  const [datalist, setDatalist] = useState([]);
+  useEffect(() => {
+    loadData();
+    onValue(ref(getDatabase(), "User"), (snapshot) => {
+      setUser(Object.values(snapshot.val()));
+    });
+    setDatalist(data);
+    onRefresh();
+    setStatusFilter(status);
+  }, [data.length, datalist.length]);
   const onRefresh = () => {
     setRefreshing(true);
 
     setRefreshing(false);
   };
 
+  const setStatusFilter = (status) => {
+    if (status != "All") {
+      setDatalist([...data.filter((e) => e.Status === status)]);
+    } else {
+      setDatalist(data);
+    }
+    setStatus(status);
+  };
+
+  const renderItem = ({ item, index }) => {
+    return item.Status == "false" ? null : (
+      <View
+        key={index.dt_id}
+        style={{ flexDirection: "row", paddingVertical: 15 }}
+      >
+        <View style={{ padding: 10 }}>
+          <Material name="" style={{ width: 50, height: 50 }}></Material>
+        </View>
+        <View
+          style={{ flex: 1, paddingHorizontal: 10, justifyContent: "center" }}
+        >
+          <Text style={{ fontSize: 16, fontWeight: "bold" }}>{item.Price}</Text>
+        </View>
+        <View
+          style={[
+            styles.itemStatus,
+            { backgroundColor: item.status === "All" ? "#e5848e" : "#69c080" },
+          ]}
+        >
+          <Text>{item.Status}</Text>
+        </View>
+        <TouchableOpacity
+          style={[
+            styles.itemStatus,
+            { backgroundColor: item.status === "All" ? "#e5848e" : "#blue" },
+          ]}
+          onPress={() => {
+            changeModalVisible(true);
+            setdt_id(item.dt_id);
+            setdt(item);
+          }}
+        >
+          <Text>Detail</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const [showModal, setShowModal] = useState(false);
+  const [dt_id, setdt_id] = useState("");
+  const [dt, setdt] = useState({});
+
+  const changeModalVisible = (bool) => {
+    setShowModal(bool);
+  };
+
+  const separator = () => {
+    return <View style={{ height: 1, backgroundColor: "#f1f1f1" }} />;
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.sideLeft}>
         <View style={styles.appNameContainer}>
-          <Text style={styles.appName}>Ciliphone Admin</Text>
+          <Text style={styles.appName}>REACT ADMIN</Text>
         </View>
         <View style={styles.sideMenu}>
           <View style={styles.dashboardContainer}>
@@ -53,9 +181,7 @@ const HomeAdmin = (props) => {
               source={require("../../assets/img/group.png")}
             ></Image>
             <View style={styles.userManagementTextContainer}>
-              <TouchableOpacity onPress={() => route("user")}>
-                <Text style={styles.userManagementText}>User Management</Text>
-              </TouchableOpacity>
+              <Text style={styles.userManagementText}>User Management</Text>
             </View>
           </View>
           <View style={styles.categoryManagementContainer}>
@@ -75,11 +201,9 @@ const HomeAdmin = (props) => {
               source={require("../../assets/img/trolley.png")}
             ></Image>
             <View style={styles.productManagementTextContainer}>
-              <TouchableOpacity onPress={() => route("product")}>
-                <Text style={styles.productManagementText}>
-                  Product Management
-                </Text>
-              </TouchableOpacity>
+              <Text style={styles.productManagementText}>
+                Product Management
+              </Text>
             </View>
           </View>
           <View style={styles.invoiceManagementContainer}>
@@ -150,29 +274,60 @@ const HomeAdmin = (props) => {
               source={require("../../assets/img/dashboard.png")}
             ></Image>
             <View style={styles.routesTextContainer}>
-              <Text style={styles.routesText}>Dashboard / User Management</Text>
+              <Text style={styles.routesText}>Dashboard</Text>
             </View>
-            <TouchableOpacity
-              style={styles.buttonAdd}
-              onPress={handleClickOpen}
-            >
-              <Image
-                style={styles.buttonAddImg}
-                source={require("../../assets/img/plus.png")}
-              />
-              <Text style={styles.buttonAddText}>New</Text>
-            </TouchableOpacity>
           </View>
-          <View style={styles.tableContainer}>
-            <GetData myType={type}></GetData>
-            <DialogAddProduct open={open}></DialogAddProduct>
+          <View
+            style={{ flex: 1, paddingHorizontal: 10, justifyContent: "center" }}
+          >
+            <View style={styles.listStatus}>
+              {listStatusTitle.map((e) => (
+                <TouchableOpacity
+                  style={[
+                    styles.btnStatus,
+                    status === e.status && styles.btnActive,
+                  ]}
+                  onPress={() => setStatusFilter(e.status)}
+                >
+                  <Text
+                    style={[
+                      styles.btnText,
+                      status === e.status && styles.textActive,
+                    ]}
+                  >
+                    {e.status}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            <FlatList
+              data={datalist}
+              keyExtractor={(e, dt_id) => dt_id.toString()}
+              renderItem={renderItem}
+              ItemSeparatorComponent={separator}
+            />
+            <Modal
+              animationType="none"
+              transparent={false}
+              visible={showModal}
+              onRequestClose={() => {
+                changeModalVisible(false);
+              }}
+            >
+              <DetailModal
+                changeModalVisible={changeModalVisible}
+                detailproduct={dt_id}
+                detail={dt}
+                user={user}
+              />
+            </Modal>
           </View>
         </View>
       </View>
     </View>
   );
 };
-export default HomeAdmin;
+export default Cart;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -358,24 +513,34 @@ const styles = StyleSheet.create({
   },
   routesTextContainer: {},
   routesText: {},
-  tableContainer: {
-    width: "100%",
-    height: "100%",
-  },
-  buttonAdd: {
-    borderBottomWidth: 1,
-    marginLeft: 900,
-    width: 100,
-    justifyContent: "center",
-    alignItems: "center",
+  listStatus: {
     flexDirection: "row",
+    alignSelf: "center",
+    marginBottom: 20,
   },
-  buttonAddImg: {
-    width: 16,
-    height: 16,
-    marginRight: 10,
+  btnStatus: {
+    width: 250,
+    flexDirection: "row",
+    borderWidth: 0.5,
+    borderColor: "#EBEBEB",
+    padding: 10,
+    justifyContent: "center",
   },
-  buttonAddText: {
-    color: "blue",
+  btnText: {
+    fontSize: 16,
+  },
+  btnActive: {
+    backgroundColor: "#E6838D",
+  },
+  textActive: {
+    color: "#fff",
+  },
+  itemStatus: {
+    backgroundColor: "green",
+    paddingHorizontal: 6,
+    justifyContent: "center",
+    right: 12,
+    width: 100,
+    alignItems: "center",
   },
 });

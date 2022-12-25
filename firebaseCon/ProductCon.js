@@ -15,12 +15,19 @@ export const ProductContextProvider = (props) => {
   const { children } = props;
 
   const [data, setData] = useState([]);
-
-  const getProduct = async ({}) => {
+  const [upPro, setUppro] = useState("");
+  const getProduct = async () => {
+    //  var item = [];
     await onValue(ref(getDatabase(), "Products"), (snapshot) => {
+      // item = Object.values(snapshot.val());
       setData(Object.values(snapshot.val()));
     });
+
+    // return item;
   };
+  useEffect(() => {
+    getProduct();
+  }, []);
   const updatePro = async (
     Category,
     description,
@@ -58,12 +65,14 @@ export const ProductContextProvider = (props) => {
     price
   ) => {
     await getProduct();
-    var id = "pd" + data.length + 1;
-    set(ref(getDatabase(), "Products/" + id), {
+    var id = data[data.length - 1].Product_id.slice(2);
+    var fullid = parseInt(id) + 1;
+    console.log(fullid, "//////////%%%%%%%%%%%%%");
+    set(ref(getDatabase(), "Products/pd" + fullid), {
       Category_id: Category,
       Description: description,
       Import_Date: "26/11/2003",
-      Product_id: id,
+      Product_id: "pd" + fullid,
       Product_name: name,
       Product_picture:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEj8pII-4uSHc9kV-JadDHiuD3Y1AJ2ugHog&usqp=CAU",
@@ -71,6 +80,16 @@ export const ProductContextProvider = (props) => {
       Sale: sale,
       price: price,
     });
+    getProduct();
+  };
+  const getSold = async () => {
+    const res = await getProduct();
+    var sold = 0;
+    for (var i = 1; i < res.length; i++) {
+      sold += res[i - 1].Total_price;
+    }
+    console.log(sold, "%%%%%%%%%%%");
+    return sold;
   };
 
   return (
@@ -79,6 +98,9 @@ export const ProductContextProvider = (props) => {
         addProduct,
         removePro,
         updatePro,
+        upPro,
+        setUppro,
+        getSold,
       }}
     >
       {children}

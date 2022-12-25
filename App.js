@@ -4,13 +4,17 @@ import { app } from "./component/FirebaseConfig";
 import { UserContextProvider } from "./firebaseCon/UserContext";
 import { ProductContextProvider } from "./firebaseCon/ProductCon";
 import Login from "./src/pages/Login";
+import Cart from "./src/pages/Cart";
+import Dashboard from "./src/pages/DashBoard";
 export default function App() {
   return (
-    /* <UserContextProvider>
+    <UserContextProvider>
       <ProductContextProvider>
         <HomeAdmin />
       </ProductContextProvider>
-    </UserContextProvider>*/
-    <Login />
+    </UserContextProvider>
+    // <Login />
+    //  <Dashboard />
+    // <Cart />
   );
 }

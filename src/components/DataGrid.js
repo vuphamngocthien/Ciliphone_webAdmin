@@ -38,9 +38,9 @@ function GetData(props) {
 
 function DataProduct() {
   const [open, setOpen] = useState(false);
-  const [Pd_id, setpd_id] = useState("pd5");
+
   const [data, setData] = useState([]);
-  const { addProduct, removePro, updatePro } = useContext(ProductContext);
+  const { addProduct, removePro, setUppro } = useContext(ProductContext);
   const loadData = async () => {
     await onValue(ref(getDatabase(), "Products"), (snapshot) => {
       setData(Object.values(snapshot.val()));
@@ -49,11 +49,9 @@ function DataProduct() {
   useEffect(() => {
     loadData();
   }, []);
-  const handleClickOpen = (id_pd, ci) => {
+  const handleClickOpen = (id) => {
     setOpen(true);
-
-    setpd_id("pd5");
-    //console.log(ci + "$$$$$$$");
+    setUppro(id);
   };
   const removeProduct = async (id_pd) => {
     await removePro(id_pd);
@@ -76,7 +74,7 @@ function DataProduct() {
           <View style={styles.containeredit}>
             <TouchableOpacity
               style={styles.buttonEdit}
-              onPress={() => handleClickOpen(cellValues, cellValues)}
+              onPress={() => handleClickOpen(cellValues.id)}
             >
               <Image
                 style={styles.buttonEditImg}
@@ -86,7 +84,7 @@ function DataProduct() {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.buttonEdit}
-              onPress={() => removeProduct("pd5")}
+              onPress={() => removeProduct(cellValues.id)}
             >
               <Image
                 style={styles.buttonTrash}
@@ -127,20 +125,22 @@ function DataProduct() {
         rowsPerPageOptions={[10]}
         checkboxSelection
       ></DataGrid>
-      <DialogUpdateProduct open={open} Pd_id={"pd5"} />
+      <DialogUpdateProduct open={open} />
     </div>
   );
 }
 
 function DataUser() {
   const [open, setOpen] = useState(false);
-  const { onGetUser } = useContext(UserContext);
-  const { removeUser, updateUser } = useContext(UserContext);
+
+  const { removeUser, updateUser, setUpuser } = useContext(UserContext);
   const [refreshing, setRefreshing] = useState(false);
   const [us_id, setus_id] = useState("");
-  const handleClickOpen = (us_id) => {
+
+  const handleClickOpen = async (us) => {
     setOpen(true);
-    setus_id(us_id);
+
+    setUpuser(us);
   };
   const removeUser_id = async (us_id) => {
     await removeUser(us_id);
@@ -180,7 +180,7 @@ function DataUser() {
           <View style={styles.containeredit}>
             <TouchableOpacity
               style={styles.buttonEdit}
-              onPress={() => handleClickOpen("us5")}
+              onPress={() => handleClickOpen(cellValues.id)}
             >
               <Image
                 style={styles.buttonEditImg}
@@ -190,7 +190,7 @@ function DataUser() {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.buttonEdit}
-              onPress={() => removeUser_id("us5")}
+              onPress={() => removeUser_id(cellValues.id)}
             >
               <Image
                 style={styles.buttonTrash}
@@ -235,7 +235,7 @@ function DataUser() {
         rowsPerPageOptions={[10]}
         checkboxSelection
       ></DataGrid>
-      <DialogUpdateUser open={open} us_id={"us5"} />
+      <DialogUpdateUser open={open} us_id={us_id} />
     </div>
   );
 }

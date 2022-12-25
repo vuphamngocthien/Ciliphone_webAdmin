@@ -14,24 +14,18 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { ProductContext } from "../../firebaseCon/ProductCon";
-import axios from "axios";
-import Dashboard from "../pages/DashBoard";
-import GetData from "./DataGrid";
 import { getDatabase, ref, set, push, onValue } from "firebase/database";
 import { Dropdown } from "react-native-element-dropdown";
-export default function DialogUpdateProduct(props) {
+import { ProductContext } from "../../firebaseCon/ProductCon";
+import axios from "axios";
+
+export default function DialogAddProduct(props) {
   const [open, setOpen] = useState(props);
-  const [type, setType] = useState(1);
 
-  const { addProduct, removePro, updatePro, upPro, setUppro } =
-    useContext(ProductContext);
-
+  const { addProduct, removePro, upPro, setUppro } = useContext(ProductContext);
   const [name, setName] = useState("");
   const [Category, setCategory] = useState("");
   const [Sale, setSale] = useState("");
-  const [Quantity, setQuantity] = useState("");
-  const [Price, setPrice] = useState("");
   const [data, setData] = useState([]);
   useEffect(() => {
     onValue(ref(getDatabase(), "Category"), (snapshot) => {
@@ -39,12 +33,12 @@ export default function DialogUpdateProduct(props) {
     });
   }, []);
   const [value, setValue] = useState("");
-  const [label, setlabel] = useState([]);
-  const updateProduct = async () => {
-    console.log("value", value);
-    await updatePro(value, "asda", name, "asda", Quantity, Sale, Price, upPro);
+  const [Quantity, setQuantity] = useState("");
+  const [Price, setPrice] = useState("");
+  const addPro = async () => {
+    console.log("da them product", name);
+    await addProduct(value, "asda", name, "asda", Quantity, Sale, Price, upPro);
   };
-
   const [isFocus, setIsFocus] = useState(false);
 
   const renderLabel = () => {
@@ -59,12 +53,11 @@ export default function DialogUpdateProduct(props) {
   };
   const kol = async () => {
     setOpen(false);
-    <GetData myType={type}></GetData>;
   };
   return (
     <Dialog open={props.open} style={styles.dialog}>
       <DialogTitle style={styles.dialogTitleContainer}>
-        <Text style={styles.dialogTitleText}>Edit Form</Text>
+        <Text style={styles.dialogTitleText}>Add Form</Text>
       </DialogTitle>
       <DialogContent style={styles.dialogContent}>
         <View styles={styles.editContainer}>
@@ -154,8 +147,8 @@ export default function DialogUpdateProduct(props) {
         </View>
       </DialogContent>
       <DialogActions>
-        <TouchableOpacity onPress={updateProduct} style={styles.buttonUpdate}>
-          <Text>Update</Text>
+        <TouchableOpacity onPress={addPro} style={styles.buttonUpdate}>
+          <Text>Add</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonCancel} onPress={kol}>
           <Text>Cancle</Text>
