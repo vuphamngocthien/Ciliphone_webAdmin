@@ -38,7 +38,7 @@ function GetData(props) {
   }
 }
 
-function DataProduct() {
+function DataProduct(props) {
   const [open, setOpen] = useState(false);
 
   const [data, setData] = useState([]);

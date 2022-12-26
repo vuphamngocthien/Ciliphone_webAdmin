@@ -20,6 +20,7 @@ import Dashboard from "../pages/DashBoard";
 import GetData from "./DataGrid";
 import { getDatabase, ref, set, push, onValue } from "firebase/database";
 import { Dropdown } from "react-native-element-dropdown";
+import { DataGrid } from "../../src/components/DataGrid";
 export default function DialogUpdateProduct(props) {
   const [open, setOpen] = useState(props);
   const [type, setType] = useState(1);
@@ -57,9 +58,9 @@ export default function DialogUpdateProduct(props) {
     }
     return null;
   };
-  const kol = async () => {
-    setOpen(false);
-    <GetData myType={type}></GetData>;
+  const kol = () => {
+    setOpen(!open);
+    console.log(open);
   };
   return (
     <Dialog open={props.open} style={styles.dialog}>
@@ -158,7 +159,7 @@ export default function DialogUpdateProduct(props) {
           <Text>Update</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonCancel} onPress={kol}>
-          <Text>Cancle</Text>
+          <Text>Cancel</Text>
         </TouchableOpacity>
       </DialogActions>
     </Dialog>
