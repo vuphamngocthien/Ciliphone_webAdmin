@@ -1,20 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Modal } from 'react-native';
 import GetData from '../components/DataGrid';
 import React, { useState, useEffect } from 'react';
-import DialogAddProduct from '../components/DialogAddProduct';
-
-const type = 1;
+import ProductModal from '../components/ProductModal';
+import ProductAddModal from '../components/ProductAddModal';
 
 export default function ProductManagement(props) {
 
   const [type, setType] = useState(1);
 
+  const [showModal, setShowModal] = useState(false);
 
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
+  const changeModalVisible = (bool) => {
+    setShowModal(bool);
   };
 
   return (
@@ -101,14 +99,25 @@ export default function ProductManagement(props) {
             <View style={styles.routesTextContainer}>
               <Text style={styles.routesText}>Dashboard / Product Management</Text>
             </View>
-            <TouchableOpacity style={styles.buttonAdd} onPress={handleClickOpen}>
+            <TouchableOpacity style={styles.buttonAdd} onPress={() => {changeModalVisible(true)}}>
               <Image style={styles.buttonAddImg} source={require('../../assets/img/plus.png')} />
               <Text style={styles.buttonAddText}>New</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.tableContainer}>
-            <GetData myType={type}></GetData>
-            <DialogAddProduct open={open}/>
+            <GetData myType={type} showModal={showModal}></GetData>
+            <Modal
+              animationType="none"
+              transparent={false}
+              visible={showModal}
+              onRequestClose={() => {
+                changeModalVisible(false);
+              }}
+            >
+              <ProductAddModal
+                changeModalVisible={changeModalVisible}
+              />
+            </Modal>
           </View>
         </View>
       </View>

@@ -1,20 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Modal } from 'react-native';
 import GetData from '../components/DataGrid';
 import React, { useState, useEffect } from 'react';
-import DialogUpdateUser from '../components/DialogUpdateUser';
-
-const type = 2;
+import UserModal from '../components/UserModal';
+import { getDatabase, ref, set, push, onValue } from "firebase/database"; 
 
 export default function UserManagement(props) {
 
   const [type, setType] = useState(2);
 
+  const [showModal, setShowModal] = useState(false);
 
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
+  const changeModalVisible = (bool) => {
+    setShowModal(bool);
   };
 
   return (
@@ -30,7 +28,7 @@ export default function UserManagement(props) {
               source={require("../../assets/img/dashboard.png")}
             ></Image>
             <View style={styles.dashboardTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('Dashboard')}}><Text style={styles.dashboardText}>Dashboard</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => { props.navigation.navigate('Dashboard') }}><Text style={styles.dashboardText}>Dashboard</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.userManagementContainer}>
@@ -39,7 +37,7 @@ export default function UserManagement(props) {
               source={require("../../assets/img/group.png")}
             ></Image>
             <View style={styles.userManagementTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('UserManagement')}}><Text style={styles.userManagementText}>User Management</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => { props.navigation.navigate('UserManagement') }}><Text style={styles.userManagementText}>User Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.categoryManagementContainer}>
@@ -48,7 +46,7 @@ export default function UserManagement(props) {
               source={require("../../assets/img/options.png")}
             ></Image>
             <View style={styles.categoryManagementTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('CategoryManagement')}}><Text style={styles.categoryManagementText}>Category Management</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => { props.navigation.navigate('CategoryManagement') }}><Text style={styles.categoryManagementText}>Category Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.productManagementContainer}>
@@ -57,7 +55,7 @@ export default function UserManagement(props) {
               source={require("../../assets/img/trolley.png")}
             ></Image>
             <View style={styles.productManagementTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('ProductManagement')}}><Text style={styles.productManagementText}>Product Management</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => { props.navigation.navigate('ProductManagement') }}><Text style={styles.productManagementText}>Product Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.invoiceManagementContainer}>
@@ -66,7 +64,7 @@ export default function UserManagement(props) {
               source={require("../../assets/img/trolley.png")}
             ></Image>
             <View style={styles.invoiceManagementTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('InvoiceManagement')}}><Text style={styles.invoiceManagementText}>Invoice Management</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => { props.navigation.navigate('InvoiceManagement') }}><Text style={styles.invoiceManagementText}>Invoice Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.themeContainer}>
@@ -101,14 +99,21 @@ export default function UserManagement(props) {
             <View style={styles.routesTextContainer}>
               <Text style={styles.routesText}>Dashboard / User Management</Text>
             </View>
-            {/* <TouchableOpacity style={styles.buttonAdd} onPress={handleClickOpen}>
-              <Image style={styles.buttonAddImg} source={require('../../assets/img/plus.png')} />
-              <Text style={styles.buttonAddText}>New</Text>
-            </TouchableOpacity> */}
           </View>
           <View style={styles.tableContainer}>
-            <GetData myType={type}></GetData>
-            <DialogUpdateUser open={open} />
+            <GetData myType={type} showModal={showModal}></GetData>
+            <Modal
+              animationType="none"
+              transparent={false}
+              visible={showModal}
+              onRequestClose={() => {
+                changeModalVisible(false);
+              }}
+            >
+              <UserModal
+                changeModalVisible={changeModalVisible}
+              />
+            </Modal>
           </View>
         </View>
       </View>

@@ -8,7 +8,6 @@ import CategoryManagement from '../../src/pages/CategoryManagement';
 import ProductManagement from '../../src/pages/ProductManagement';
 import InvoiceManagement from '../../src/pages/InvoiceManagement';
 import Search from '../../src/pages/Search';
-import Login from '../../src/components/Login';
 
 const MainNavigation = createStackNavigator(
     {
@@ -19,12 +18,10 @@ const MainNavigation = createStackNavigator(
         InvoiceManagement: InvoiceManagement,
         Search: Search,
     },
+    {headerMode: 'none'},
     {
         navigationOptions: {
-            headerTintColor: '#fff',
-            headerStyle: {
-                backgroundColor: '#000'
-            }
+            headerVisible: false
         }
     }
 )

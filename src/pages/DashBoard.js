@@ -19,6 +19,7 @@ import {
   ContributionGraph,
   StackedBarChartac,
 } from "react-native-chart-kit";
+import { useNavigation } from "@react-navigation/native";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -88,7 +89,6 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     loadData();
-
     onRefresh();
   }, []);
   const onRefresh = () => {

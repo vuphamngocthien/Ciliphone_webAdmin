@@ -20,70 +20,25 @@ const listStatusTitle = [
   { status: "Delivered" },
 ];
 
-/*const data = [
-  {
-    name: "hd01",
-    status: "Canceled",
-  },
-  {
-    name: "hd02",
-    status: "Process",
-  },
-  {
-    name: "hd03",
-    status: "Canceled",
-  },
-  {
-    name: "hd04",
-    status: "Process",
-  },
-  {
-    name: "hd05",
-    status: "Process",
-  },
-  {
-    name: "hd06",
-    status: "Process",
-  },
-  {
-    name: "hd07",
-    status: "Delivered",
-  },
-  {
-    name: "hd08",
-    status: "Canceled",
-  },
-  {
-    name: "hd09",
-    status: "Process",
-  },
-  {
-    name: "hd10",
-    status: "Canceled",
-  },
-
-  {
-    name: "hd14",
-    status: "Delivered",
-  },
-  {
-    name: "hd15",
-    status: "Canceled",
-  },
-];*/
-
 const InvoiceManagement = (props) => {
+
   const [status, setStatus] = useState("All");
+
   const [refreshing, setRefreshing] = useState(false);
+
   const [data, setData] = useState([]);
+
   const [user, setUser] = useState([]);
+
   const loadData = async () => {
     await onValue(ref(getDatabase(), "Detail_cart"), (snapshot) => {
       setData(Object.values(snapshot.val()));
       setDatalist(Object.values(snapshot.val()));
     });
   };
+
   const [datalist, setDatalist] = useState([]);
+
   useEffect(() => {
     loadData();
     onValue(ref(getDatabase(), "User"), (snapshot) => {
@@ -93,9 +48,9 @@ const InvoiceManagement = (props) => {
     onRefresh();
     setStatusFilter(status);
   }, [data.length, datalist.length]);
+
   const onRefresh = () => {
     setRefreshing(true);
-
     setRefreshing(false);
   };
 
@@ -120,7 +75,7 @@ const InvoiceManagement = (props) => {
         <View
           style={{ flex: 1, paddingHorizontal: 10, justifyContent: "center" }}
         >
-          <Text style={{ fontSize: 16, fontWeight: "bold" }}>{item.Price}</Text>
+          <Text style={{ fontSize: 16, fontWeight: "bold" }}>{item.dt_id}</Text>
         </View>
         <View
           style={[
@@ -259,7 +214,7 @@ const InvoiceManagement = (props) => {
               source={require("../../assets/img/dashboard.png")}
             ></Image>
             <View style={styles.routesTextContainer}>
-              <Text style={styles.routesText}>Dashboard</Text>
+              <Text style={styles.routesText}>Dashboard / Invoice Management</Text>
             </View>
           </View>
           <View
@@ -312,7 +267,9 @@ const InvoiceManagement = (props) => {
     </View>
   );
 };
+
 export default InvoiceManagement;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

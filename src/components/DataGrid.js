@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity, Modal } from "react-native";
 import { getDatabase, ref, set, push, onValue } from "firebase/database";
 import { DataGrid } from "@mui/x-data-grid";
 import {
@@ -10,28 +10,19 @@ import {
   DialogTitle,
 } from "@mui/material";
 import axios from "axios";
-import DialogUpdateUser from "./DialogUpdateUser";
-import DialogUpdateProduct from "./DialogUpdateProduct";
+import ProductModal from "./ProductModal";
+import UserModal from "./UserModal";
+import CategoryModal from "./CategoryModal";
 import { UserContext } from "../../firebaseCon/UserContext";
 import { ProductContext } from "../../firebaseCon/ProductCon";
 import { async } from "@firebase/util";
+
 function GetData(props) {
-  // const [data, setData] = useState([]);
-
-  // const getData = async () => {
-  //     await axios.get("").then((res) => {
-  //         setData(res.data.data);
-  //     });
-  // }
-
-  // useEffect(() => {
-  //     getData();
-  // }, []);
   if (props.myType == 1) {
     return DataProduct();
   } else if (props.myType == 2) {
     return DataUser();
-  } else if (props.myType == 3){
+  } else if (props.myType == 3) {
     return DataCategory();
   } else {
     console.log("Dont have data !");
@@ -39,22 +30,28 @@ function GetData(props) {
 }
 
 function DataProduct(props) {
-  const [open, setOpen] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
 
   const [data, setData] = useState([]);
+
   const { addProduct, removePro, setUppro } = useContext(ProductContext);
+
   const loadData = async () => {
     await onValue(ref(getDatabase(), "Products"), (snapshot) => {
       setData(Object.values(snapshot.val()));
     });
   };
+
   useEffect(() => {
     loadData();
   }, []);
-  const handleClickOpen = (id) => {
-    setOpen(true);
+
+  const changeModalVisible = (bool, id) => {
+    setShowModal(bool);
     setUppro(id);
   };
+
   const removeProduct = async (id_pd) => {
     await removePro(id_pd);
     loadData();
@@ -76,8 +73,9 @@ function DataProduct(props) {
           <View style={styles.containeredit}>
             <TouchableOpacity
               style={styles.buttonEdit}
-              onPress={() => handleClickOpen(cellValues.id)}
+              onPress={() => { changeModalVisible(true) }}
             >
+              {console.log(showModal)}
               <Image
                 style={styles.buttonEditImg}
                 source={require("../../assets/img/edit.png")}
@@ -127,28 +125,44 @@ function DataProduct(props) {
         rowsPerPageOptions={[10]}
         checkboxSelection
       ></DataGrid>
-      <DialogUpdateProduct open={open} />
+      <Modal
+        animationType="none"
+        transparent={false}
+        visible={showModal}
+        onRequestClose={() => {
+          changeModalVisible(false);
+        }}
+      >
+        <ProductModal
+          changeModalVisible={changeModalVisible}
+        />
+      </Modal>
     </div>
   );
 }
 
 function DataUser() {
-  const [open, setOpen] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
 
   const { removeUser, updateUser, setUpuser } = useContext(UserContext);
+
   const [refreshing, setRefreshing] = useState(false);
+
   const [us_id, setus_id] = useState("");
 
-  const handleClickOpen = async (us) => {
-    setOpen(true);
-
+  const changeModalVisible = (bool, us) => {
+    setShowModal(bool);
     setUpuser(us);
   };
+
   const removeUser_id = async (us_id) => {
     await removeUser(us_id);
     loadData();
   };
+
   const [data, setData] = useState([]);
+
   const loadData = async () => {
     await onValue(ref(getDatabase(), "User"), (snapshot) => {
       setData(Object.values(snapshot.val()));
@@ -157,12 +171,11 @@ function DataUser() {
 
   useEffect(() => {
     loadData();
-
     onRefresh();
   }, []);
+
   const onRefresh = () => {
     setRefreshing(true);
-
     setRefreshing(false);
   };
 
@@ -182,13 +195,13 @@ function DataUser() {
           <View style={styles.containeredit}>
             <TouchableOpacity
               style={styles.buttonEdit}
-              onPress={() => handleClickOpen(cellValues.id)}
+              onPress={() => changeModalVisible(true)}
             >
               <Image
                 style={styles.buttonEditImg}
-                source={require("../../assets/img/edit.png")}
+                source={require("../../assets/img/info.png")}
               />
-              <Text style={styles.buttonEditText}>Edit</Text>
+              <Text style={styles.buttonEditText}>Detail</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.buttonEdit}
@@ -224,41 +237,52 @@ function DataUser() {
           Phone_number: row.Phone_number,
           Money: row.Money,
           id: row.User_id,
-          /*id: row.id,
-          username: row.username,
-          birthday: row.birthday,
-          email: row.email,
-          address: row.address,
-          phone: row.phone,
-          money: row.money,*/
         }))}
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}
         checkboxSelection
       ></DataGrid>
-      <DialogUpdateUser open={open} us_id={us_id} />
+      <Modal
+        animationType="none"
+        transparent={false}
+        visible={showModal}
+        onRequestClose={() => {
+          changeModalVisible(false);
+        }}
+      >
+        <UserModal
+          changeModalVisible={changeModalVisible}
+
+        />
+      </Modal>
     </div>
   );
 }
 
 function DataCategory() {
-  const [open, setOpen] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
 
   const [data, setData] = useState([]);
+
   const { addProduct, removePro, setUppro } = useContext(ProductContext);
+
   const loadData = async () => {
     await onValue(ref(getDatabase(), "Category"), (snapshot) => {
       setData(Object.values(snapshot.val()));
     });
   };
+
   useEffect(() => {
     loadData();
   }, []);
-  const handleClickOpen = (id) => {
-    setOpen(true);
+
+  const changeModalVisible = (bool, id) => {
+    setShowModal(bool);
     setUppro(id);
   };
+
   const removeProduct = async (id_pd) => {
     await removePro(id_pd);
     loadData();
@@ -275,7 +299,7 @@ function DataCategory() {
           <View style={styles.containeredit}>
             <TouchableOpacity
               style={styles.buttonEdit}
-              onPress={() => handleClickOpen(cellValues.id)}
+              onPress={() => { changeModalVisible(true) }}
             >
               <Image
                 style={styles.buttonEditImg}
@@ -320,7 +344,18 @@ function DataCategory() {
         rowsPerPageOptions={[10]}
         checkboxSelection
       ></DataGrid>
-      <DialogUpdateProduct open={open} />
+      <Modal
+        animationType="none"
+        transparent={false}
+        visible={showModal}
+        onRequestClose={() => {
+          changeModalVisible(false);
+        }}
+      >
+        <CategoryModal
+          changeModalVisible={changeModalVisible}
+        />
+      </Modal>
     </div>
   );
 }
