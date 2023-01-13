@@ -123,7 +123,6 @@ function DataProduct(props) {
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}
-        checkboxSelection
       ></DataGrid>
       <Modal
         animationType="none"
@@ -241,7 +240,6 @@ function DataUser() {
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}
-        checkboxSelection
       ></DataGrid>
       <Modal
         animationType="none"
@@ -342,7 +340,6 @@ function DataCategory() {
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}
-        checkboxSelection
       ></DataGrid>
       <Modal
         animationType="none"

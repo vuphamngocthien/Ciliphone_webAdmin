@@ -82,14 +82,16 @@ const UserModal = (props) => {
           <Text style={{ fontSize: 16, color: "white", paddingBottom: 5 }}>Email</Text>
           <TextInput style={{ width: 360, height: 30, backgroundColor: "white", borderWidth: 1, borderRadius: 5 }}></TextInput>
         </View>
-        <TouchableOpacity
-          style={{ justifyContent: "center", alignItems: "center", paddingTop: 100 }}
-          onPress={() => closeModal(false)}
-        >
-          <Text style={{ color: "blue", fontSize: 24, fontWeight: "bold" }}>
-            Close
-          </Text>
-        </TouchableOpacity>
+        <View style={{ justifyContent: 'center', alignItems: 'center'}}>
+          <TouchableOpacity
+            style={{ backgroundColor: '#FF9138', height: 40, width: 120, borderRadius: 10, justifyContent: 'center', alignItems: 'center', marginTop: 100 }}
+            onPress={() => closeModal(false)}
+          >
+            <Text style={{ color: "white", fontSize: 24, fontWeight: "bold" }}>
+              Close
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
     height: HEIGHT_MODAL,
     width: WIDTH,
     paddingTop: 10,
-    backgroundColor: "#FF9138",
+    backgroundColor: "#00BFFF",
     borderRadius: 10,
     flexDirection: 'column'
   },

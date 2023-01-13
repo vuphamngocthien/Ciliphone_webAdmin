@@ -84,18 +84,18 @@ const ProductAddModal = (props) => {
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
           <TouchableOpacity
-            style={{ justifyContent: "center", alignItems: "center", paddingTop: 40, paddingRight: 70}}
+            style={{ backgroundColor: '#FF9138', height: 40, width: 120, borderRadius: 10, justifyContent: 'center', alignItems: 'center', marginTop: 20, marginRight: 70}}
             onPress={() => closeModal(false)}
           >
-            <Text style={{ color: "blue", fontSize: 24, fontWeight: "bold" }}>
+            <Text style={{ color: "white", fontSize: 24, fontWeight: "bold" }}>
               Add
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ justifyContent: "center", alignItems: "center", paddingTop: 40 }}
+            style={{ backgroundColor: '#FF9138', height: 40, width: 120, borderRadius: 10, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}
             onPress={() => closeModal(false)}
           >
-            <Text style={{ color: "blue", fontSize: 24, fontWeight: "bold" }}>
+            <Text style={{ color: "white", fontSize: 24, fontWeight: "bold" }}>
               Close
             </Text>
           </TouchableOpacity>
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     height: HEIGHT_MODAL,
     width: WIDTH,
     paddingTop: 10,
-    backgroundColor: "#FF9138",
+    backgroundColor: "#00BFFF",
     borderRadius: 10,
     flexDirection: 'column'
   },

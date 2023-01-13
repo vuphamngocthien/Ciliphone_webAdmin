@@ -54,7 +54,7 @@ const CategoryAddModal = (props) => {
     return (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center", }}>
             <View style={styles.modal}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: "center", padding: 20}}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: "center", padding: 20 }}>
                     <Image source={require("../../assets/img/avataradmin.png")} style={{ height: 75, width: 75 }} />
                 </View>
                 <View style={{ flexDirection: 'column', paddingLeft: 20, paddingBottom: 20 }}>
@@ -63,18 +63,18 @@ const CategoryAddModal = (props) => {
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                     <TouchableOpacity
-                        style={{ justifyContent: "center", alignItems: "center", paddingTop: 50, paddingRight: 70 }}
+                        style={{ backgroundColor: '#FF9138', height: 40, width: 120, borderRadius: 10, justifyContent: 'center', alignItems: 'center', marginTop: 60, marginRight: 20 }}
                         onPress={() => closeModal(false)}
                     >
-                        <Text style={{ color: "blue", fontSize: 24, fontWeight: "bold" }}>
-                            Add
+                        <Text style={{ color: "white", fontSize: 24, fontWeight: "bold" }}>
+                            Update
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={{ justifyContent: "center", alignItems: "center", paddingTop: 50 }}
+                        style={{ backgroundColor: '#FF9138', height: 40, width: 120, borderRadius: 10, justifyContent: 'center', alignItems: 'center', marginTop: 60 }}
                         onPress={() => closeModal(false)}
                     >
-                        <Text style={{ color: "blue", fontSize: 24, fontWeight: "bold" }}>
+                        <Text style={{ color: "white", fontSize: 24, fontWeight: "bold" }}>
                             Close
                         </Text>
                     </TouchableOpacity>
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
         height: HEIGHT_MODAL,
         width: WIDTH,
         paddingTop: 10,
-        backgroundColor: "#FF9138",
+        backgroundColor: "#00BFFF",
         borderRadius: 10,
         flexDirection: 'column'
     },
