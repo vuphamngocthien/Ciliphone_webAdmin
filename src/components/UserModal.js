@@ -48,7 +48,7 @@ const UserModal = (props) => {
   //   }, []);
 
   const closeModal = (bool) => {
-    props.changeModalVisible(bool); s
+    props.changeModalVisible(bool);
     console.log(bool);
   };
 
