@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-
+import GetData from '../components/DataGrid';
 import React, { useState, useEffect, useContext } from "react";
 import { getDatabase, ref, set, push, onValue } from "firebase/database";
 import Material from "react-native-vector-icons/MaterialIcons";
@@ -22,6 +22,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 const screenWidth = Dimensions.get("window").width;
+const type = 4;
 
 const chartConfig = {
   backgroundGradientFrom: "black",
@@ -48,6 +49,7 @@ const data = {
 
 const Dashboard = (props) => {
   // const { getSold } = useContext(ProductContext);
+  const [type, setType] = useState(4);
   const [cart, setCart] = useState([]);
   const [open, setOpen] = useState(props.open);
   const [productSold, setProductSold] = useState(0);
@@ -110,7 +112,7 @@ const Dashboard = (props) => {
               source={require("../../assets/img/dashboard.png")}
             ></Image>
             <View style={styles.dashboardTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('Dashboard')}}><Text style={styles.dashboardText}>Dashboard</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => { props.navigation.navigate('Dashboard') }}><Text style={styles.dashboardText}>Dashboard</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.userManagementContainer}>
@@ -119,7 +121,7 @@ const Dashboard = (props) => {
               source={require("../../assets/img/group.png")}
             ></Image>
             <View style={styles.userManagementTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('UserManagement')}}><Text style={styles.userManagementText}>User Management</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => { props.navigation.navigate('UserManagement') }}><Text style={styles.userManagementText}>User Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.categoryManagementContainer}>
@@ -128,7 +130,7 @@ const Dashboard = (props) => {
               source={require("../../assets/img/options.png")}
             ></Image>
             <View style={styles.categoryManagementTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('CategoryManagement')}}><Text style={styles.categoryManagementText}>Category Management</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => { props.navigation.navigate('CategoryManagement') }}><Text style={styles.categoryManagementText}>Category Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.productManagementContainer}>
@@ -137,7 +139,7 @@ const Dashboard = (props) => {
               source={require("../../assets/img/trolley.png")}
             ></Image>
             <View style={styles.productManagementTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('ProductManagement')}}><Text style={styles.productManagementText}>Product Management</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => { props.navigation.navigate('ProductManagement') }}><Text style={styles.productManagementText}>Product Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.invoiceManagementContainer}>
@@ -146,7 +148,7 @@ const Dashboard = (props) => {
               source={require("../../assets/img/trolley.png")}
             ></Image>
             <View style={styles.invoiceManagementTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('InvoiceManagement')}}><Text style={styles.invoiceManagementText}>Invoice Management</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => { props.navigation.navigate('InvoiceManagement') }}><Text style={styles.invoiceManagementText}>Invoice Management</Text></TouchableOpacity>
             </View>
           </View>
           <View style={styles.themeContainer}>
@@ -429,18 +431,9 @@ const Dashboard = (props) => {
                 </View>
               </View>
             </View>
-            <View style={{ flexDirection: "row", display: "flex" }}>
-              <LineChart
-                style={{ flex: 1, margin: 10, marginLeft: 25 }}
-                data={data}
-                width={600}
-                height={400}
-                verticalLabelRotation={10}
-                chartConfig={chartConfig}
-                bezier
-              />
+            <View style={{ flexDirection: "row", display: "flex", margin: 10 }}>
               <BarChart
-                style={{ flex: 1, margin: 10 }}
+                style={{flex: 1}}
                 data={data}
                 width={600}
                 height={400}
@@ -448,6 +441,9 @@ const Dashboard = (props) => {
                 chartConfig={chartConfig}
                 verticalLabelRotation={30}
               />
+              <View style={{width: 600, height: 420, flex: 1}}>
+                <GetData myType={type}></GetData>
+              </View>
             </View>
           </View>
         </View>
@@ -455,7 +451,9 @@ const Dashboard = (props) => {
     </View>
   );
 };
+
 export default Dashboard;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

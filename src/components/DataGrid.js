@@ -24,6 +24,8 @@ function GetData(props) {
     return DataUser();
   } else if (props.myType == 3) {
     return DataCategory();
+  } else if (props.myType == 4) {
+    return DataRevenue();
   } else {
     console.log("Dont have data !");
   }
@@ -353,6 +355,71 @@ function DataCategory() {
           changeModalVisible={changeModalVisible}
         />
       </Modal>
+    </div>
+  );
+}
+
+function DataRevenue() {
+
+  const [showModal, setShowModal] = useState(false);
+
+  const [data, setData] = useState([]);
+
+  const { addProduct, removePro, setUppro } = useContext(ProductContext);
+
+  const loadData = async () => {
+    await onValue(ref(getDatabase(), "Products"), (snapshot) => {
+      setData(Object.values(snapshot.val()));
+    });
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const changeModalVisible = (bool, id) => {
+    setShowModal(bool);
+    setUppro(id);
+  };
+
+  const removeProduct = async (id_pd) => {
+    await removePro(id_pd);
+    loadData();
+  };
+
+  const columns = [
+    { field: "Product_id", headerName: "ID", width: 30 },
+    { field: "Product_name", headerName: "Product Name", width: 250 },
+    { field: "quantity_sold", headerName: "Quantity Sold", width: 150 },
+    { field: "total_revenue", headerName: "Total Revenue", width: 150 },
+  ];
+
+  const rows = data.map((row) => ({
+    id: row.Product_id,
+    Product_id: row.Product_id,
+    Product_name: row.Product_name,
+    Category_id: row.Category_id,
+    Sale: row.Sale,
+    Import_Date: row.Import_Date,
+    Quantity: row.Quantity,
+    price: row.price,
+  }));
+
+  return (
+    <div
+      style={{
+        height: "95%",
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={10}
+        rowsPerPageOptions={[10]}
+      ></DataGrid>
     </div>
   );
 }
