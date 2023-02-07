@@ -6,7 +6,9 @@ import Login from '../../src/components/Login';
 import MainNavigation from '../navigation/MainNavigation';
 
 
+
 export default function ContextNavigation (props)  {
+   
     const LoggedIn = true;
     const {isLoggedIn} = useContext(UserContext);
     return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,createContext } from "react";
 import HomeAdmin from "./src/pages/HomeAdmin";
 import { app } from "./component/FirebaseConfig";
 import { UserContextProvider } from "./firebaseCon/UserContext";
@@ -9,9 +9,11 @@ import Dashboard from "./src/pages/DashBoard";
 import MainNavigation from './src/navigation/MainNavigation'
 import ProductManagement from "./src/pages/ProductManagement";
 import ContextNavigation from "./src/navigation/ContextNavigation";
+
 export default function App(props) {
+  
   return (
-    <UserContextProvider>
+    <UserContextProvider >
       <ProductContextProvider>
         <ContextNavigation>
           {/* <MainNavigation/> */}

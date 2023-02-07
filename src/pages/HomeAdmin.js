@@ -32,7 +32,7 @@ const HomeAdmin = (props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} id>
       <View style={styles.sideLeft}>
         <View style={styles.appNameContainer}>
           <Text style={styles.appName}>Ciliphone Admin</Text>

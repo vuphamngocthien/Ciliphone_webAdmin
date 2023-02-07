@@ -15,7 +15,10 @@ export const ProductContextProvider = (props) => {
   const { children } = props;
 
   const [data, setData] = useState([]);
-  const [upPro, setUppro] = useState("");
+  const [upPro, setUppro] = useState();
+  const [data_pd,setdata_Pd]=useState([]);
+  const [data_user,setdata_user]=useState([]);
+
   const getProduct = async () => {
     //  var item = [];
     await onValue(ref(getDatabase(), "Products"), (snapshot) => {
@@ -38,6 +41,14 @@ export const ProductContextProvider = (props) => {
     price,
     Pd_id
   ) => {
+    console.log( Category,
+      description,
+      name,
+      picture,
+      quantity,
+      sale,
+      price,
+      Pd_id,'djskfhaskdfh')
     set(ref(getDatabase(), "Products/" + Pd_id), {
       Category_id: Category,
       Description: description,
@@ -46,16 +57,17 @@ export const ProductContextProvider = (props) => {
       Product_name: name,
       Product_picture:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEj8pII-4uSHc9kV-JadDHiuD3Y1AJ2ugHog&usqp=CAU",
-      Quantity: quantity,
-      Sale: sale,
-      price: price,
-    });
-  };
-  const removePro = async (pd_id) => {
-    remove(ref(getDatabase(), "Products/" + pd_id), {});
-  };
-
-  const addProduct = async (
+        Quantity: quantity,
+        Sale: sale,
+        price: price,
+      });
+      console.log('chay duoc roi ban oi yeah')
+    };
+    const removePro = async (pd_id) => {
+      remove(ref(getDatabase(), "Products/" + pd_id), {});
+    };
+    
+    const addProduct = async (
     Category,
     description,
     name,
@@ -91,7 +103,7 @@ export const ProductContextProvider = (props) => {
     console.log(sold, "%%%%%%%%%%%");
     return sold;
   };
-
+console.log(data_pd)
   return (
     <ProductContext.Provider
       value={{
@@ -101,6 +113,10 @@ export const ProductContextProvider = (props) => {
         upPro,
         setUppro,
         getSold,
+        setdata_Pd,
+        data_pd,
+        setdata_user,
+        data_user
       }}
     >
       {children}

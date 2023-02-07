@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { getDatabase, ref, set, push, onValue } from "firebase/database";
 import {
   StyleSheet,
@@ -9,6 +9,7 @@ import {
   Image,
   TextInput,
 } from "react-native";
+import { UserContext } from "../../firebaseCon/UserContext";
 
 const WIDTH = 400;
 const HEIGHT_MODAL = 600;
@@ -21,7 +22,7 @@ const UserModal = (props) => {
   const [data, setData] = useState([]);
   const [dtData, setdtData] = useState([]);
   const [pd, setpd] = useState([]);
-
+  const {Data_user}=useContext(UserContext);
   const [user_name, setUsername] = useState("");
   const [email, setUseremail] = useState("");
   const [phone, setUserphone] = useState("");
@@ -52,6 +53,7 @@ const UserModal = (props) => {
     console.log(bool);
   };
 
+  console.log('>>>',Data_user)
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center", }}>
       <View style={styles.modal}>
@@ -59,28 +61,28 @@ const UserModal = (props) => {
           <Image source={require("../../assets/img/avataradmin.png")} style={{ height: 75, width: 75 }} />
           <View style={{ flexDirection: 'column' }}>
             <View style={{ marginLeft: 20 }}>
-              <Text style={{ fontSize: 24, color: "white" }}>Dinh Ngoc Tang</Text>
+              <Text style={{ fontSize: 24, color: "white" }}>{Data_user.User_name}</Text>
             </View>
             <View style={{ marginLeft: 20 }}>
-              <Text style={{ fontSize: 24, color: "brown" }}>$1000</Text>
+              <Text style={{ fontSize: 24, color: "brown" }}>${Data_user.Money}</Text>
             </View>
           </View>
         </View>
         <View style={{ flexDirection: 'column', paddingLeft: 20, paddingBottom: 20 }}>
           <Text style={{ fontSize: 16, color: "white", paddingBottom: 5 }}>Birthday</Text>
-          <TextInput style={{ width: 360, height: 30, backgroundColor: "white", borderWidth: 1, borderRadius: 5 }}></TextInput>
+          <TextInput style={{ width: 360, height: 30, backgroundColor: "white", borderWidth: 1, borderRadius: 5 }} defaultValue={Data_user.Birth}></TextInput>
         </View>
         <View style={{ flexDirection: 'column', paddingLeft: 20, paddingBottom: 20 }}>
           <Text style={{ fontSize: 16, color: "white", paddingBottom: 5 }}>Address</Text>
-          <TextInput style={{ width: 360, height: 30, backgroundColor: "white", borderWidth: 1, borderRadius: 5 }}></TextInput>
+          <TextInput style={{ width: 360, height: 30, backgroundColor: "white", borderWidth: 1, borderRadius: 5 }} defaultValue={Data_user.Address}></TextInput>
         </View>
         <View style={{ flexDirection: 'column', paddingLeft: 20, paddingBottom: 20 }}>
           <Text style={{ fontSize: 16, color: "white", paddingBottom: 5 }}>Phone</Text>
-          <TextInput style={{ width: 360, height: 30, backgroundColor: "white", borderWidth: 1, borderRadius: 5 }}></TextInput>
+          <TextInput style={{ width: 360, height: 30, backgroundColor: "white", borderWidth: 1, borderRadius: 5 }} defaultValue={Data_user.Phone_number}></TextInput>
         </View>
         <View style={{ flexDirection: 'column', paddingLeft: 20, paddingBottom: 20 }}>
           <Text style={{ fontSize: 16, color: "white", paddingBottom: 5 }}>Email</Text>
-          <TextInput style={{ width: 360, height: 30, backgroundColor: "white", borderWidth: 1, borderRadius: 5 }}></TextInput>
+          <TextInput style={{ width: 360, height: 30, backgroundColor: "white", borderWidth: 1, borderRadius: 5 }} defaultValue={Data_user.Email}></TextInput>
         </View>
         <View style={{ justifyContent: 'center', alignItems: 'center'}}>
           <TouchableOpacity

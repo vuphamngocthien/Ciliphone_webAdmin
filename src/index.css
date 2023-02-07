@@ -1,0 +1,12 @@
+.Container{
+    flex: 1;
+    flex-direction: row;
+    background-color: "#fff";
+}
+#light{
+    background-color: white;
+
+}
+#dark{
+    background-color:black;
+}

@@ -15,6 +15,7 @@ export const UserContextProvider = (props) => {
   const { children } = props;
   const [isLoggedIn, setisLoggedIn] = useState(false);
   const [data, setData] = useState([]);
+  const [Data_user,setData_user]=useState([]);
   const [upUser, setUpuser] = useState([]);
   const getUser = async ({}) => {
     await onValue(ref(getDatabase(), "Products"), (snapshot) => {
@@ -55,7 +56,9 @@ export const UserContextProvider = (props) => {
         setUpuser,
         upUser,
         isLoggedIn,
-        setisLoggedIn
+        setisLoggedIn,
+        setData_user,
+        Data_user
       }}
     >
       {children}

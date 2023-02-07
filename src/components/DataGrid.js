@@ -37,8 +37,7 @@ function DataProduct(props) {
 
   const [data, setData] = useState([]);
 
-  const { addProduct, removePro, setUppro } = useContext(ProductContext);
-
+  const { addProduct, removePro,data_pd,setdata_Pd ,setUppro,setdata_user,data_user} = useContext(ProductContext);
   const loadData = async () => {
     await onValue(ref(getDatabase(), "Products"), (snapshot) => {
       setData(Object.values(snapshot.val()));
@@ -49,7 +48,7 @@ function DataProduct(props) {
     loadData();
   }, []);
 
-  const changeModalVisible = (bool, id) => {
+  const changeModalVisible = (bool,id) => {
     setShowModal(bool);
     setUppro(id);
   };
@@ -73,11 +72,7 @@ function DataProduct(props) {
       renderCell: (cellValues) => {
         return (
           <View style={styles.containeredit}>
-            <TouchableOpacity
-              style={styles.buttonEdit}
-              onPress={() => { changeModalVisible(true) }}
-            >
-              {console.log(showModal)}
+            <TouchableOpacity style={styles.buttonEdit}onPress={() => { changeModalVisible(true,cellValues.id),setdata_Pd(cellValues.row)}}>
               <Image
                 style={styles.buttonEditImg}
                 source={require("../../assets/img/edit.png")}
@@ -101,7 +96,8 @@ function DataProduct(props) {
 
   const rows = data.map((row) => ({
     id: row.Product_id,
-    Product_id: row.Product_id,
+    product_picture:row.Product_picture,
+    Product_id:row.Product_id,
     Product_name: row.Product_name,
 
     Category_id: row.Category_id,
@@ -109,6 +105,8 @@ function DataProduct(props) {
     Import_Date: row.Import_Date,
     Quantity: row.Quantity,
     price: row.price,
+    Description:row.Description
+
   }));
 
   return (
@@ -120,12 +118,12 @@ function DataProduct(props) {
         alignItems: "center",
       }}
     >
-      <DataGrid
+       <DataGrid
         rows={rows}
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}
-      ></DataGrid>
+      ></DataGrid> 
       <Modal
         animationType="none"
         transparent={false}
@@ -146,7 +144,7 @@ function DataUser() {
 
   const [showModal, setShowModal] = useState(false);
 
-  const { removeUser, updateUser, setUpuser } = useContext(UserContext);
+  const { removeUser, updateUser, setUpuser,setData_user,Data_user } = useContext(UserContext);
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -196,7 +194,7 @@ function DataUser() {
           <View style={styles.containeredit}>
             <TouchableOpacity
               style={styles.buttonEdit}
-              onPress={() => changeModalVisible(true)}
+              onPress={() => {changeModalVisible(true),setData_user(cellValues.row)}}
             >
               <Image
                 style={styles.buttonEditImg}
@@ -218,7 +216,16 @@ function DataUser() {
       },
     },
   ];
-
+const rows=data.map((row) => ({
+  User_id: row.User_id,
+  User_name: row.User_name,
+  Birth: row.Birth,
+  Email: row.Email,
+  Address: row.Address,
+  Phone_number: row.Phone_number,
+  Money: row.Money,
+  id: row.User_id,
+}))
   return (
     <div
       style={{
@@ -229,16 +236,7 @@ function DataUser() {
       }}
     >
       <DataGrid
-        rows={data.map((row) => ({
-          User_id: row.User_id,
-          User_name: row.User_name,
-          Birth: row.Birth,
-          Email: row.Email,
-          Address: row.Address,
-          Phone_number: row.Phone_number,
-          Money: row.Money,
-          id: row.User_id,
-        }))}
+        rows={rows}
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}
@@ -358,34 +356,80 @@ function DataCategory() {
     </div>
   );
 }
-
 function DataRevenue() {
-
   const [showModal, setShowModal] = useState(false);
 
   const [data, setData] = useState([]);
-
-  const { addProduct, removePro, setUppro } = useContext(ProductContext);
+  const [dt_cart, setdt_cart] = useState("");
+  const [formComp, setFormComp] = useState([]);
 
   const loadData = async () => {
-    await onValue(ref(getDatabase(), "Products"), (snapshot) => {
+    var tam = [];
+
+    onValue(ref(getDatabase(), "Products"), (snapshot) => {
       setData(Object.values(snapshot.val()));
     });
-  };
 
+    onValue(ref(getDatabase(), "Detail_cart"), (snapshot) => {
+      setdt_cart(Object.values(snapshot.val()));
+      try{
+        Object.values(snapshot.val()).forEach((element) => {
+          if (element.Status == "false" || element.Status == "Canceled") {
+          } else {
+            Object.values(element.Product_id).forEach((kol) => {
+              let check = 0;
+              if (tam.length == 0) {
+                tam.push({
+                  id_pd: kol.id_pd,
+                  Quantity: kol.Quantity,
+                  Total_price: kol.price,
+                });
+              } else {
+                for (var i = 1; i <= tam.length; i++) {
+                  if (kol.id_pd == tam[i - 1].id_pd) {
+                    tam[i - 1].Quantity =
+                      parseInt(tam[i - 1].Quantity) + parseInt(kol.Quantity);
+                    tam[i - 1].Total_price =
+                      parseInt(tam[i - 1].Total_price) + parseInt(kol.price);
+  
+                    check = 0;
+                    break;
+                  } else {
+                    check = 1;
+                  }
+                }
+                if (check == 1) {
+                  tam.push({
+                    id_pd: kol.id_pd,
+                    Quantity: kol.Quantity,
+                    Total_price: kol.price,
+                  });
+                }
+              }
+            });
+          }
+        });
+      }catch(error){
+        console.log(error);
+      }
+      
+    });
+
+    setFormComp(tam);
+  };
+  const loadName = async (id) => {
+    for (var j = 0; j <= data.length; i++) {
+      if (id == data[j].Product_id) {
+        return data[j].Product_name;
+      }
+    }
+  };
   useEffect(() => {
     loadData();
+
+    console.log(data.length, ">>>>>>>>>>>>>data");
+    console.log(formComp.length, "<<<<<<<<<<<<<<<<formcomp");
   }, []);
-
-  const changeModalVisible = (bool, id) => {
-    setShowModal(bool);
-    setUppro(id);
-  };
-
-  const removeProduct = async (id_pd) => {
-    await removePro(id_pd);
-    loadData();
-  };
 
   const columns = [
     { field: "Product_id", headerName: "ID", width: 30 },
@@ -394,15 +438,12 @@ function DataRevenue() {
     { field: "total_revenue", headerName: "Total Revenue", width: 150 },
   ];
 
-  const rows = data.map((row) => ({
-    id: row.Product_id,
-    Product_id: row.Product_id,
-    Product_name: row.Product_name,
-    Category_id: row.Category_id,
-    Sale: row.Sale,
-    Import_Date: row.Import_Date,
-    Quantity: row.Quantity,
-    price: row.price,
+  const rows = formComp.map((row) => ({
+    id: row.id_pd,
+    Product_id: row.id_pd,
+    Product_name: "Xiaomi",
+    quantity_sold: row.Quantity,
+    total_revenue: row.Total_price,
   }));
 
   return (
@@ -419,6 +460,11 @@ function DataRevenue() {
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}
+        initialState={{
+          sorting: {
+            sortModel: [{ field: "total_revenue", sort: "desc" }],
+          },
+        }}
       ></DataGrid>
     </div>
   );

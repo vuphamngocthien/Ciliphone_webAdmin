@@ -21,7 +21,6 @@ const listStatusTitle = [
 ];
 
 const InvoiceManagement = (props) => {
-
   const [status, setStatus] = useState("All");
 
   const [refreshing, setRefreshing] = useState(false);
@@ -29,11 +28,15 @@ const InvoiceManagement = (props) => {
   const [data, setData] = useState([]);
 
   const [user, setUser] = useState([]);
+  const [product, setProduct] = useState([]);
 
   const loadData = async () => {
     await onValue(ref(getDatabase(), "Detail_cart"), (snapshot) => {
       setData(Object.values(snapshot.val()));
       setDatalist(Object.values(snapshot.val()));
+    });
+    onValue(ref(getDatabase(), "Products"), (snapshot) => {
+      setProduct(Object.values(snapshot.val()));
     });
   };
 
@@ -73,9 +76,18 @@ const InvoiceManagement = (props) => {
           <Material name="" style={{ width: 50, height: 50 }}></Material>
         </View>
         <View
-          style={{ flex: 1, paddingHorizontal: 10, justifyContent: "center" }}
+          style={{ flex: 2, paddingHorizontal: 10, justifyContent: "center" }}
         >
-          <Text style={{ fontSize: 16, fontWeight: "bold" }}>{item.dt_id}</Text>
+          <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+            {item.Innitiated_date}
+          </Text>
+        </View>
+        <View
+          style={{ flex: 2, paddingHorizontal: 5, justifyContent: "center" }}
+        >
+          <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+            Price: {item.Price}
+          </Text>
         </View>
         <View
           style={[
@@ -109,6 +121,23 @@ const InvoiceManagement = (props) => {
   const changeModalVisible = (bool) => {
     setShowModal(bool);
   };
+  const getProduct_detail = (dt) => {
+    var arr = Object.values(dt["Product_id"]);
+    var tam = [];
+    for (var i = 1; i <= arr.length; i++) {
+      for (var j = 1; j <= product.length; j++) {
+        if (product[j - 1].Product_id == arr[i - 1].id_pd) {
+          tam.push({
+            product_image: product[j - 1].Product_picture,
+            product_name: product[j - 1].Product_name,
+            description: product[j - 1].Description,
+          });
+          console.log(tam.length);
+        }
+      }
+    }
+    return tam;
+  };
 
   const separator = () => {
     return <View style={{ height: 1, backgroundColor: "#f1f1f1" }} />;
@@ -127,7 +156,13 @@ const InvoiceManagement = (props) => {
               source={require("../../assets/img/dashboard.png")}
             ></Image>
             <View style={styles.dashboardTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('Dashboard')}}><Text style={styles.dashboardText}>Dashboard</Text></TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  props.navigation.navigate("Dashboard");
+                }}
+              >
+                <Text style={styles.dashboardText}>Dashboard</Text>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.userManagementContainer}>
@@ -136,7 +171,13 @@ const InvoiceManagement = (props) => {
               source={require("../../assets/img/group.png")}
             ></Image>
             <View style={styles.userManagementTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('UserManagement')}}><Text style={styles.userManagementText}>User Management</Text></TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  props.navigation.navigate("UserManagement");
+                }}
+              >
+                <Text style={styles.userManagementText}>User Management</Text>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.categoryManagementContainer}>
@@ -145,8 +186,16 @@ const InvoiceManagement = (props) => {
               source={require("../../assets/img/options.png")}
             ></Image>
             <View style={styles.categoryManagementTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('CategoryManagement')}}><Text style={styles.categoryManagementText}>Category Management</Text></TouchableOpacity>
-            </View>
+              <TouchableOpacity
+                onPress={() => {
+                  props.navigation.navigate("CategoryManagement");
+                }}
+              >
+                <Text style={styles.categoryManagementText}>
+                  Category Management
+                </Text>
+              </TouchableOpacity>
+</View>
           </View>
           <View style={styles.productManagementContainer}>
             <Image
@@ -154,7 +203,15 @@ const InvoiceManagement = (props) => {
               source={require("../../assets/img/trolley.png")}
             ></Image>
             <View style={styles.productManagementTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('ProductManagement')}}><Text style={styles.productManagementText}>Product Management</Text></TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  props.navigation.navigate("ProductManagement");
+                }}
+              >
+                <Text style={styles.productManagementText}>
+                  Product Management
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.invoiceManagementContainer}>
@@ -163,7 +220,15 @@ const InvoiceManagement = (props) => {
               source={require("../../assets/img/trolley.png")}
             ></Image>
             <View style={styles.invoiceManagementTextContainer}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('InvoiceManagement')}}><Text style={styles.invoiceManagementText}>Invoice Management</Text></TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  props.navigation.navigate("InvoiceManagement");
+                }}
+              >
+                <Text style={styles.invoiceManagementText}>
+                  Invoice Management
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.themeContainer}>
@@ -213,8 +278,10 @@ const InvoiceManagement = (props) => {
               style={styles.routesImg}
               source={require("../../assets/img/dashboard.png")}
             ></Image>
-            <View style={styles.routesTextContainer}>
-              <Text style={styles.routesText}>Dashboard / Invoice Management</Text>
+<View style={styles.routesTextContainer}>
+              <Text style={styles.routesText}>
+                Dashboard / Invoice Management
+              </Text>
             </View>
           </View>
           <View
@@ -259,6 +326,8 @@ const InvoiceManagement = (props) => {
                 detailproduct={dt_id}
                 detail={dt}
                 user={user}
+                product={product}
+                product_detail={() => getProduct_detail(dt)}
               />
             </Modal>
           </View>
@@ -333,7 +402,7 @@ const styles = StyleSheet.create({
     height: 24,
     marginRight: 10,
   },
-  categoryManagementTextContainer: {},
+categoryManagementTextContainer: {},
   categoryManagementText: {
     fontSize: 16,
   },
